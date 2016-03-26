@@ -146,13 +146,6 @@
       (.setCursor cm (aget cursor "line") new-cursor-x))
     (.scrollTo cm scroll-x scroll-y)))
 
-#_(defn render-demo! []
-    (create-editor! "code-demo" :demo)
-    (editor-ui/render! :demo)
-    (start-editor-sync!)
-    (swap! editor-state assoc-in [:demo :text] demo-example))
-
-
 ;;----------------------------------------------------------------------
 ;; Life Cycle events
 ;;----------------------------------------------------------------------
@@ -166,7 +159,12 @@
 
 (def frame-updates (atom {}))
 
-(defn selection [cm] (.getSelections cm (.listSelections cm)))
+(defn selection [cm]
+  (map (fn [s]
+         (clojure.string/replace
+                 s
+                 "[object Object]" ""))
+       (.getSelections cm (.listSelections cm))))
 
 (defn before-change
   "Called before any change is applied to the editor."
@@ -225,11 +223,11 @@
          cm)))))
 
 (defn cm-selection-or-form [cm]
-  (let [selection (or (when (= (aget (selection cm) 0) "")
+  (let [selection (or (when (= (first (selection cm)) "")
                         (-> @editor-state
                             :editor
                             :text))
-                      (aget (selection cm) 0))]
+                      (first (selection cm)))]
     selection))
 
 (defn create-editor!
@@ -287,7 +285,7 @@
        (.on cm "beforeChange" before-change)
        (.on cm "cursorActivity" on-cursor-activity)
 
-       (.addKeyMap cm #js {"Ctrl-Enter" (fn [cm] (print cm) (evaluate (cm-selection-or-form cm)))})
+       (.addKeyMap cm #js {"Ctrl-Enter" (fn [cm] (evaluate (cm-selection-or-form cm)))})
 
        cm))))
 
