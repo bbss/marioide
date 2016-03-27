@@ -33,7 +33,11 @@
                                           ["/src/cljs" "/js/compiled/out" "/js/compiled/devcards_out"]
                                           fetch-file!)
                          {:warning-as-error true
-                          :verbose          true})]
+                          :verbose          true
+                          :cache {
+                                  :paths ["/js/compiled/devcards_out/om/next.cljs.cache.edn"
+                                          "/js/compiled/devcards_out/om/next/cache.cljs.cache.edn"
+                                          "/js/compiled/devcards_out/om/next/protocols.cljs.cache.edn"]}})]
     (replumb/read-eval-call
       repl-opts
       (partial handle-result!

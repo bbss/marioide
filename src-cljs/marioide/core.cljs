@@ -1,5 +1,6 @@
 (ns marioide.core
   (:require
+    marioide.radial-menu
     [sablono.core :as sab :refer-macros [html]]
     [replumb.core :as replumb]
     [marioide.parinfer.core :refer [attach-editor! editor-state cm-selection-or-form]]
@@ -14,7 +15,7 @@
 (enable-console-print!)
 
 (defcard
-  first-card
+  editor
   (dom-node
     attach-editor!))
 
