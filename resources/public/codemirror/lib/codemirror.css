@@ -3,8 +3,12 @@
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
   font-family: monospace;
-  height: 150px;
+  height: auto;
   color: black;
+}
+
+.CodeMirror-matchingbracket {
+  color: #42FF42 !important;
 }
 
 /* PADDING */

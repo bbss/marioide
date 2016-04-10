@@ -7,8 +7,6 @@
     (set! (.-innerHTML div) text)
     div))
 
-;timer to test css
-
 (defn notification
   ([text] (notification text 3000))
   ([text timeout]

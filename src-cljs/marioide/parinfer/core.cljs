@@ -162,8 +162,8 @@
 (defn selection [cm]
   (map (fn [s]
          (clojure.string/replace
-                 s
-                 "[object Object]" ""))
+           s
+           "[object Object]" ""))
        (.getSelections cm (.listSelections cm))))
 
 (defn before-change
@@ -224,19 +224,25 @@
 
 (defn cm-selection-or-form [cm]
   (let [selection (or (when (= (first (selection cm)) "")
-                        (-> @editor-state
-                            :editor
-                            :text))
+                        (.getValue cm))
                       (first (selection cm)))]
     selection))
+
+(def latest-cm (atom {}))
+
+(defn current-selection []
+  (cm-selection-or-form
+    @latest-cm))
 
 (defn create-editor!
   "Create a parinfer editor."
   ([element-id key-] (create-editor! element-id key- {}))
   ([element-id key- opts]
+    (create-editor! (js/document.getElementById element-id) element-id key- opts)
+   )
+  ([element element-id key- opts]
    (when-not (get @editor-state key-)
-     (let [element (js/document.getElementById element-id)
-           cm (js/CodeMirror.fromTextArea element (clj->js (merge editor-opts opts)))
+     (let [cm (js/CodeMirror.fromTextArea element (clj->js (merge editor-opts opts)))
            wrapper (.getWrapperElement cm)
            watcher (js/scrollMonitor.create wrapper)
            initial-state (assoc empty-editor-state
@@ -260,7 +266,9 @@
          (.on cm "focus" (fn [e]
                            #_(swap! controls-state assoc :target-key key-)
                            #_(stop-playing! key-)
-                           (on-cursor-activity cm))))
+                           (reset! latest-cm cm)
+                           (on-cursor-activity cm)
+                           )))
 
        (when-not (get @editor-state key-)
          (swap! frame-updates assoc key- {}))
@@ -285,9 +293,11 @@
        (.on cm "beforeChange" before-change)
        (.on cm "cursorActivity" on-cursor-activity)
 
-       (.addKeyMap cm #js {"Ctrl-Enter" (fn [cm] (evaluate (cm-selection-or-form cm)))})
+       (.addKeyMap cm #js {"Ctrl-Enter" (fn [] (evaluate (cm-selection-or-form cm)))})
 
-       cm))))
+       cm))
+   )
+  )
 
 
 
@@ -326,5 +336,3 @@
           ]
       ))
   )
-
-
