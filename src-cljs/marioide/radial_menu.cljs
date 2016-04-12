@@ -144,25 +144,28 @@
   Object
   (render [this]
     (let [{:keys [main-menu-item ui/react-key]} (om/props this)]
-      (print react-key)
+      (print main-menu-item)
       (dom/div
         (clj->js {:key   react-key
                   :style {:float    "right"
                           :position "relative"
                           :right    50
                           :bottom   15}})
-        (map (fn [item] (radial-button-menu (om/computed item
-                                                         {:toggle-expanded         (toggle-local-state-key :expanded)
-                                                          :toggle-expanded-parent  (fn [])
-                                                          :depth                   0
-                                                          :visible                 false
-                                                          :start-direction-degrees 90
-                                                          :max-fan-angle-degrees   90
-                                                          :fly-out-radius          120
-                                                          :start-position          [0 0]
-                                                          :end-position            [0 0]
-                                                          :diameter                50})))
-             (dom/div (clj->js {:key "menu"}) main-menu-item))))))
+        [(map (fn [item] (radial-button-menu (om/computed item
+                                                          {:toggle-expanded         (toggle-local-state-key :expanded)
+                                                           :toggle-expanded-parent  (fn [])
+                                                           :depth                   0
+                                                           :visible                 false
+                                                           :start-direction-degrees 90
+                                                           :max-fan-angle-degrees   90
+                                                           :fly-out-radius          120
+                                                           :start-position          [0 0]
+                                                           :end-position            [0 0]
+                                                           :diameter                50})))
+              main-menu-item
+              )
+         (dom/div (clj->js {:key "menu"}) )]
+        ))))
 
 
 (def radial-menu-db {:main-menu-item  [[:menu-item/by-id 99]]
@@ -196,7 +199,7 @@
                           :start-position          [150 150]
                           :end-position            [150 150]
                           :diameter                50}))))
-      (reset! ap (uc/mount @ap RadialMenu node))))
+      (uc/mount @ap RadialMenu node)))
   (db->tree (om/get-query RadialMenu)
             radial-menu-db radial-menu-db)
   {:inspect-data true

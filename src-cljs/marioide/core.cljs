@@ -3,35 +3,29 @@
     marioide.radial-menu
     marioide.devcards.forms
     cljsjs.react
-    cljsjs.react-mdl
     [sablono.core :as sab :refer-macros [html]]
     [replumb.core :as replumb]
     [marioide.parinfer.core :refer [attach-editor! editor-state
                                     current-selection cm-selection-or-form]]
     [om.next :as om :refer-macros [defui]]
-    [om.dom :as dom]
     [marioide.replumb.core :refer [eval]]
     [marioide.console :refer [res-atom]]
+    [marioide.forms :refer [forms-db Forms]]
+    [marioide.radial-menu :refer [radial-menu-db]]
     [untangled.client.core :as uc]
-    [untangled.client.data-fetch :as df]
     )
   (:require-macros
     [devcards.core :as dc :refer [defcard deftest dom-node mkdn-pprint-source
                                   defcard-doc]]))
 
 (enable-console-print!)
-(defcard
-  editor
-  (dom-node
-    attach-editor!))
 
 (defn on-app-started [app]
   (let [reconciler (:reconciler app)
         state (om/app-state reconciler)
         ]
-    (when (js/document.querySelector ".cljs-logo")
-      (set! (.-innerHTML (.-parentNode (js/document.querySelector ".cljs-logo"))) ""))
-    #_(df/load-data reconciler (om/get-query RadialButtonMenu))
+    (when-let [cljs-logo (js/document.querySelector ".cljs-logo")]
+      (set! (.-innerHTML (.-parentNode cljs-logo)) ""))
     ))
 
 (defonce app (atom (uc/new-untangled-client
@@ -47,7 +41,22 @@
                                                          }}}
                      :started-callback on-app-started)))
 
+(defcard app-card
+         (dc/dom-node
+           (fn [state-atom node]
+             (when (js/document.querySelector ".cljs-logo")
+               (set! (.-innerHTML (.-parentNode (js/document.querySelector ".cljs-logo"))) ""))
+             (set! (.. node -innerHTML) "")
+             (defonce ap (atom (uc/new-untangled-client :initial-state @state-atom)))
+             (reset! ap (uc/mount @ap Forms node))))
+         (om/db->tree (om/get-query Forms)
+                      (merge forms-db radial-menu-db)
+                      (merge forms-db radial-menu-db))
+         {:inspect-data true
+          :history      true})
 
+(defcard-doc
+  (dc/mkdn-pprint-source Forms))
 
 (defn main []
   ;; conditionally start the app based on whether the #main-app-area

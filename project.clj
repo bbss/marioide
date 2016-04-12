@@ -53,7 +53,7 @@
                                        :asset-path           "js/compiled/devcards_out"
                                        :output-to            "resources/public/js/compiled/marioide_devcards.js"
                                        :output-dir           "resources/public/js/compiled/devcards_out"
-                                       ;:recompile-dependents true
+                                       :recompile-dependents true
                                        :source-map-timestamp true}}
                        {:id           "dev"
                         :source-paths ["src-cljs"]

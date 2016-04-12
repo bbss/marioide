@@ -241,61 +241,60 @@
     (create-editor! (js/document.getElementById element-id) element-id key- opts)
    )
   ([element element-id key- opts]
-   (when-not (get @editor-state key-)
-     (let [cm (js/CodeMirror.fromTextArea element (clj->js (merge editor-opts opts)))
-           wrapper (.getWrapperElement cm)
-           watcher (js/scrollMonitor.create wrapper)
-           initial-state (assoc empty-editor-state
-                           :mode (or (:parinfer-mode opts) :indent-mode))
-           prev-editor-state (atom nil)
-           evaluate (or (:eval opts) print)]
+   (let [cm (js/CodeMirror.fromTextArea element (clj->js (merge editor-opts opts)))
+         wrapper (.getWrapperElement cm)
+         watcher (js/scrollMonitor.create wrapper)
+         initial-state (assoc empty-editor-state
+                         :mode (or (:parinfer-mode opts) :indent-mode))
+         prev-editor-state (atom nil)
+         evaluate (or (:eval opts) print)]
 
 
-       (set! (.-id wrapper) (str "cm-" element-id))
+     (set! (.-id wrapper) (str "cm-" element-id))
 
-       (when-not (:readOnly opts)
+     (when-not (:readOnly opts)
 
-         ;; on blur, start playing animation again, if we are not dev mode.
-         (.on cm "blur" (fn [e]
-                          #_(when-not (:show? @controls-state)
-                              (when (.-isInViewport watcher)
-                                (play-recording! key-)))))
+       ;; on blur, start playing animation again, if we are not dev mode.
+       (.on cm "blur" (fn [e]
+                        #_(when-not (:show? @controls-state)
+                            (when (.-isInViewport watcher)
+                              (play-recording! key-)))))
 
-         ;; on focus, set recording controls to focus on this editor.
-         ;; and stop any animation.
-         (.on cm "focus" (fn [e]
-                           #_(swap! controls-state assoc :target-key key-)
-                           #_(stop-playing! key-)
-                           (reset! latest-cm cm)
-                           (on-cursor-activity cm)
-                           )))
+       ;; on focus, set recording controls to focus on this editor.
+       ;; and stop any animation.
+       (.on cm "focus" (fn [e]
+                         #_(swap! controls-state assoc :target-key key-)
+                         #_(stop-playing! key-)
+                         (reset! latest-cm cm)
+                         (on-cursor-activity cm)
+                         )))
 
-       (when-not (get @editor-state key-)
-         (swap! frame-updates assoc key- {}))
+     (when-not (get @editor-state key-)
+       (swap! frame-updates assoc key- {}))
 
-       (swap! editor-state update-in [key-]
-              #(-> (or % initial-state)
-                   (assoc :cm cm
-                          :watcher watcher)))
+     (swap! editor-state update-in [key-]
+            #(-> (or % initial-state)
+                 (assoc :cm cm
+                        :watcher watcher)))
 
-       ;; Extend the code mirror object with some utility methods.
-       (specify! cm
-         IEditor
-         (get-prev-state [this] prev-editor-state)
-         (cm-key [this] key-)
-         (frame-updated? [this] (get-in @frame-updates [key- :frame-updated?]))
-         (set-frame-updated! [this value] (swap! frame-updates assoc-in [key- :frame-updated?] value))
-         )
+     ;; Extend the code mirror object with some utility methods.
+     (specify! cm
+       IEditor
+       (get-prev-state [this] prev-editor-state)
+       (cm-key [this] key-)
+       (frame-updated? [this] (get-in @frame-updates [key- :frame-updated?]))
+       (set-frame-updated! [this value] (swap! frame-updates assoc-in [key- :frame-updated?] value))
+       )
 
-       ;; handle code mirror events
-       (.on cm "change" on-change)
+     ;; handle code mirror events
+     (.on cm "change" on-change)
 
-       (.on cm "beforeChange" before-change)
-       (.on cm "cursorActivity" on-cursor-activity)
+     (.on cm "beforeChange" before-change)
+     (.on cm "cursorActivity" on-cursor-activity)
 
-       (.addKeyMap cm #js {"Ctrl-Enter" (fn [] (evaluate (cm-selection-or-form cm)))})
+     (.addKeyMap cm #js {"Ctrl-Enter" (fn [] (evaluate (cm-selection-or-form cm)))})
 
-       cm))
+     cm)
    )
   )
 
