@@ -1,0 +1,1677 @@
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.312 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.191 seconds.[0m
+[36m----  Could not Read  src/speech/core.cljs   line:13  column:20  ----[0m
+
+  [1mInvalid token: js/[0m
+
+  [36m11[0m  [36m  (sab/html [:div[0m
+  [36m12[0m  [36m             [:h1 "This is your first devcd!"]]))[0m
+  [33m13[0m  [1m(js/console.log js/)[0m
+  [0m  [0m  [33m                   ^--- Invalid token: js/[0m
+  [36m14[0m  [36m(defn main [][0m
+  [36m15[0m  [36m  ;; conditionally start the app based on whether the #main-app-area[0m
+  [36m16[0m  [36m  ;; node is on the page[0m
+
+[36m----  Reader Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.27 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.284 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:15  column:15  ----[0m
+
+  [1mUse of undeclared Var speech.core/recongizer[0m
+
+  [36m11[0m  [36m  (sab/html [:div[0m
+  [36m12[0m  [36m             [:h1 "This is your first devcd!"]]))[0m
+  [36m13[0m  [36m[0m
+  [36m14[0m  [36m(def recognizer (js/webkitSpeechRecognition.))[0m
+  [33m15[0m  [1m(.-continuous recongizer)[0m
+  [0m  [0m  [33m              ^--- Use of undeclared Var speech.core/recongizer[0m
+  [36m16[0m  [36m(defn main [][0m
+  [36m17[0m  [36m  ;; conditionally start the app based on whether the #main-app-area[0m
+  [36m18[0m  [36m  ;; node is on the page[0m
+  [36m19[0m  [36m  (if-let [node (.getElementById js/document "main-app-area")][0m
+  [36m20[0m  [36m    (.render js/ReactDOM (sab/html [:div "This is working"]) node)))[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.285 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.264 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.314 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:22  column:9  ----[0m
+
+  [1mUse of undeclared Var speech.core/recongnizer[0m
+
+  [36m18[0m  [36m(gobj/set recognizer "interimResults" true)[0m
+  [36m19[0m  [36m(gobj/set recognizer "onstart" (fn [res] (print res)))[0m
+  [36m20[0m  [36m(gobj/set recognizer "onresult" (fn [res] (print res)))[0m
+  [36m21[0m  [36m(gobj/get recognizer "lang" "en-US")[0m
+  [33m22[0m  [1m(.start recongnizer)[0m
+  [0m  [0m  [33m        ^--- Use of undeclared Var speech.core/recongnizer[0m
+  [36m23[0m  [36m[0m
+  [36m24[0m  [36m(defn main [][0m
+  [36m25[0m  [36m  ;; conditionally start the app based on whether the #main-app-area[0m
+  [36m26[0m  [36m  ;; node is on the page[0m
+  [36m27[0m  [36m  (if-let [node (.getElementById js/document "main-app-area")][0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.321 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.297 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.27 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.281 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.358 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.31 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.279 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.295 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.267 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.273 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.27 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.274 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.27 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.271 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.273 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.267 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.266 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.272 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.271 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.273 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.279 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.321 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.322 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.276 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.269 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.27 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.268 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.268 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.265 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.268 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.195 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:21  column:36  ----[0m
+
+  [1mUnknown dot form of (. (fn [alt] (.-transcript alt)) -map ((.-results res))) with classification [:cljs.analyzer/expr :cljs.analyzer/property :cljs.analyzer/expr][0m
+
+  [36m19[0m  [36m(gobj/set recognizer "onresult"[0m
+  [36m20[0m  [36m          (fn [res][0m
+  [33m21[0m  [1m            (js/console.log (doall (.-map (fn [alt] (.-transcript alt))[0m
+  [0m  [0m  [33m                                   ^--- Unknown dot form of (. (fn [alt] (.-transcript alt)) -map ((.-results res))) with classification [:cljs.analyzer/expr :cljs.analyzer/property :cljs.analyzer/expr][0m
+  [36m22[0m  [36m                                          (.-results res))))))[0m
+  [36m23[0m  [36m[0m
+  [36m24[0m  [36m(gobj/set recognizer "lang" "en-US")[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.282 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.272 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:16  column:49  ----[0m
+
+  [1mUse of undeclared Var speech.core/recognizer[0m
+
+  [36m13[0m  [36m(defcard first-card[0m
+  [36m14[0m  [36m  (sab/html [:div[0m
+  [36m15[0m  [36m             [:h1 "Press button to talk to me!"][0m
+  [33m16[0m  [1m             [:button {:on-click (fn [] (.start recognizer))} "talk to me"]]))[0m
+  [0m  [0m  [33m                                                ^--- Use of undeclared Var speech.core/recognizer[0m
+  [36m17[0m  [36m[0m
+  [36m18[0m  [36m(defn main [][0m
+  [36m19[0m  [36m  ;; conditionally start the app based on whether the #main-app-area[0m
+  [36m20[0m  [36m  ;; node is on the page[0m
+  [36m21[0m  [36m  (if-let [node (.getElementById js/document "main-app-area")][0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.273 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.331 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.272 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.276 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.271 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.279 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.265 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.333 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.276 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.33 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.333 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.337 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.274 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.279 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.295 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.264 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.272 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.28 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:21  column:38  ----[0m
+
+  [1mUse of undeclared Var speech.core/res[0m
+
+  [36m17[0m  [36m(gobj/set recognizer "continuous" true)[0m
+  [36m18[0m  [36m(gobj/set recognizer "interimResults" true)[0m
+  [36m19[0m  [36m(gobj/set recognizer "onresult"[0m
+  [36m20[0m  [36m          (fn [{}][0m
+  [33m21[0m  [1m            (gobj/forEach (.-results res) (fn [v k][0m
+  [0m  [0m  [33m                                     ^--- Use of undeclared Var speech.core/res[0m
+  [36m22[0m  [36m                                            (when (.hasOwnProperty res k))(js/console.log v k)))))[0m
+  [36m23[0m  [36m[0m
+  [36m24[0m  [36m(gobj/set recognizer "onerror"[0m
+  [36m25[0m  [36m          (fn [res][0m
+  [36m26[0m  [36m            (js/console.log "error" res)[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:22  column:68  ----[0m
+
+  [1mUse of undeclared Var speech.core/res[0m
+
+  [36m18[0m  [36m(gobj/set recognizer "interimResults" true)[0m
+  [36m19[0m  [36m(gobj/set recognizer "onresult"[0m
+  [36m20[0m  [36m          (fn [{}][0m
+  [36m21[0m  [36m            (gobj/forEach (.-results res) (fn [v k][0m
+  [33m22[0m  [1m                                            (when (.hasOwnProperty res k))(js/console.log v k)))))[0m
+  [0m  [0m  [33m                                                                   ^--- Use of undeclared Var speech.core/res[0m
+  [36m23[0m  [36m[0m
+  [36m24[0m  [36m(gobj/set recognizer "onerror"[0m
+  [36m25[0m  [36m          (fn [res][0m
+  [36m26[0m  [36m            (js/console.log "error" res)[0m
+  [36m27[0m  [36m            ))[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.318 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.278 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.311 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.295 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.284 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.271 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.276 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.267 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.274 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.304 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.273 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.27 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.322 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.3 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.278 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.281 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 4.253 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:1  column:1  ----[0m
+
+  [1mUse of undeclared Var cljs.user/o[0m
+
+  [33m1[0m  [1mo(ns speech.core[0m
+  [0m [0m  [33m^--- Use of undeclared Var cljs.user/o[0m
+  [36m2[0m  [36m  (:require[0m
+  [36m3[0m  [36m   #_[om.core :as om :include-macros true][0m
+  [36m4[0m  [36m   [sablono.core :as sab :include-macros true][0m
+  [36m5[0m  [36m   [goog.object :as gobj][0m
+  [36m6[0m  [36m   [om.next :as om :refer-macros [defui]])[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.468 seconds.[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.35 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.351 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 1.445 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:49  column:1  ----[0m
+
+  [1mclojure.lang.Cons cannot be cast to clojure.lang.Named[0m
+
+  [33m49[0m  [1m(defui SpeechInteraction[0m
+  [0m  [0m  [33m^--- clojure.lang.Cons cannot be cast to clojure.lang.Named[0m
+  [36m50[0m  [36m  (render [this][0m
+  [36m51[0m  [36m          (dom/div nil "hallo")))[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.368 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.388 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.367 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.381 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.261 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:49  column:1  ----[0m
+
+  [1mIQuery protocol declaration must appear with `static`.[0m
+
+  [33m49[0m  [1m(defui SpeechInteraction[0m
+  [0m  [0m  [33m^--- IQuery protocol declaration must appear with `static`.[0m
+  [36m50[0m  [36m  om/IQuery[0m
+  [36m51[0m  [36m  (query [props][0m
+  [36m52[0m  [36m         '[:last])[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.249 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:49  column:1  ----[0m
+
+  [1mIQuery protocol declaration must appear with `static`.[0m
+
+  [33m49[0m  [1m(defui SpeechInteraction[0m
+  [0m  [0m  [33m^--- IQuery protocol declaration must appear with `static`.[0m
+  [36m50[0m  [36m  om/IQuery[0m
+  [36m51[0m  [36m  (query [props][0m
+  [36m52[0m  [36m         '[:last])[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.243 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:49  column:1  ----[0m
+
+  [1mIQuery protocol declaration must appear with `static`.[0m
+
+  [33m49[0m  [1m(defui SpeechInteraction[0m
+  [0m  [0m  [33m^--- IQuery protocol declaration must appear with `static`.[0m
+  [36m50[0m  [36m  om/IQuery[0m
+  [36m51[0m  [36m  (query [props][0m
+  [36m52[0m  [36m         '[:last])[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.293 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:68  column:3  ----[0m
+
+  [1mWrong number of args (2) passed to: core/dom-node[0m
+
+  [36m67[0m  [36m(defcard speech-interaction-card[0m
+  [33m68[0m  [1m  (dom-node [_ node][0m
+  [0m  [0m  [33m  ^--- Wrong number of args (2) passed to: core/dom-node[0m
+  [36m69[0m  [36m            (om/add-root! r SpeechInteraction node)))[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.375 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.387 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.38 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.399 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.378 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.388 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.385 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:56  column:53  ----[0m
+
+  [1mUse of undeclared Var speech.core/start[0m
+
+  [36m52[0m  [36m         '[:last])[0m
+  [36m53[0m  [36m  Object[0m
+  [36m54[0m  [36m  (render [this][0m
+  [36m55[0m  [36m          (let [{:keys [last]} (om/props this)][0m
+  [33m56[0m  [1m            (dom/div nil [(dom/button #js {:onClick start})[0m
+  [0m  [0m  [33m                                                    ^--- Use of undeclared Var speech.core/start[0m
+  [36m57[0m  [36m                          (dom/h2 #js {:key "last"} last)]))))[0m
+  [36m58[0m  [36m[0m
+  [36m59[0m  [36m(defmulti read om/dispatch)[0m
+  [36m60[0m  [36m[0m
+  [36m61[0m  [36m(defmethod read :last[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.419 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:56  column:33  ----[0m
+
+  [1mWrong number of args (1) passed to om.next/computed[0m
+
+  [36m52[0m  [36m         '[:last])[0m
+  [36m53[0m  [36m  Object[0m
+  [36m54[0m  [36m  (render [this][0m
+  [36m55[0m  [36m          (let [{:keys [last]} (om/props this)[0m
+  [33m56[0m  [1m                {:keys [start]} (om/computed this)][0m
+  [0m  [0m  [33m                                ^--- Wrong number of args (1) passed to om.next/computed[0m
+  [36m57[0m  [36m            (dom/div nil [(dom/button #js {:onClick start})[0m
+  [36m58[0m  [36m                          (dom/h2 #js {:key "last"} last)]))))[0m
+  [36m59[0m  [36m[0m
+  [36m60[0m  [36m(defmulti read om/dispatch)[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.472 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.392 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.427 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.615 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.43 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.388 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.382 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.434 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.39 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.656 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.389 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.739 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.445 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.406 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:81  column:24  ----[0m
+
+  [1mUse of undeclared Var speech.core/Error[0m
+
+  [36m77[0m  [36m  (dom-node (fn [_ node][0m
+  [36m78[0m  [36m              (prr node)[0m
+  [36m79[0m  [36m              (try[0m
+  [36m80[0m  [36m                (om/add-root! r SpeechInteraction node)[0m
+  [33m81[0m  [1m                (catch Error e (println e))))))[0m
+  [0m  [0m  [33m                       ^--- Use of undeclared Var speech.core/Error[0m
+  [36m82[0m  [36m[0m
+  [36m83[0m  [36m(defn main [][0m
+  [36m84[0m  [36m  ;; conditionally start the app based on whether the #main-app-area[0m
+  [36m85[0m  [36m  ;; node is on the page[0m
+  [36m86[0m  [36m  (if-let [node (.getElementById js/document "main-app-area")][0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.486 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.4 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.323 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:79  column:15  ----[0m
+
+  [1mclojure.lang.PersistentList cannot be cast to clojure.lang.Named[0m
+
+  [36m77[0m  [36m(dom-node (fn [_ node][0m
+  [36m78[0m  [36m            (prr node)[0m
+  [33m79[0m  [1m            (try[0m
+  [0m  [0m  [33m            ^--- clojure.lang.PersistentList cannot be cast to clojure.lang.Named[0m
+  [36m80[0m  [36m              (om/add-root! r SpeechInteraction node)[0m
+  [36m81[0m  [36m              (catch e (println e))))))[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:81  column:24  ----[0m
+
+  [1mUse of undeclared Var speech.core/Exception[0m
+
+  [36m77[0m  [36m  (dom-node (fn [_ node][0m
+  [36m78[0m  [36m              (prr node)[0m
+  [36m79[0m  [36m              (try[0m
+  [36m80[0m  [36m                (om/add-root! r SpeechInteraction node)[0m
+  [33m81[0m  [1m                (catch Exception e (println e))))))[0m
+  [0m  [0m  [33m                       ^--- Use of undeclared Var speech.core/Exception[0m
+  [36m82[0m  [36m[0m
+  [36m83[0m  [36m(defn main [][0m
+  [36m84[0m  [36m  ;; conditionally start the app based on whether the #main-app-area[0m
+  [36m85[0m  [36m  ;; node is on the page[0m
+  [36m86[0m  [36m  (if-let [node (.getElementById js/document "main-app-area")][0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.447 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.426 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.449 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.387 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.413 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.416 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.381 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.455 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.427 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.427 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.416 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.445 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.428 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.397 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.414 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.416 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.403 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.399 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.444 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.398 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.395 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:64  column:1  ----[0m
+
+  [1mBad method signature in protocol implementation, om/IQuery query does not declare arity 2[0m
+
+  [36m60[0m  [36m                       :state state[0m
+  [36m61[0m  [36m                       }))[0m
+  [36m62[0m  [36m[0m
+  [36m63[0m  [36m[0m
+  [33m64[0m  [1m(defui ^:once SpeechInteraction[0m
+  [0m  [0m  [33m^--- Bad method signature in protocol implementation, om/IQuery query does not declare arity 2[0m
+  [36m65[0m  [36m  static om/IQuery[0m
+  [36m66[0m  [36m  (query [this props][0m
+  [36m67[0m  [36m         [:last])[0m
+  [36m68[0m  [36m  Object[0m
+  [36m69[0m  [36m  (render [this][0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:64  column:1  ----[0m
+
+  [1mBad method signature in protocol implementation, om/IQuery query does not declare arity 2[0m
+
+  [36m60[0m  [36m                       :state state[0m
+  [36m61[0m  [36m                       }))[0m
+  [36m62[0m  [36m[0m
+  [36m63[0m  [36m[0m
+  [33m64[0m  [1m(defui ^:once SpeechInteraction[0m
+  [0m  [0m  [33m^--- Bad method signature in protocol implementation, om/IQuery query does not declare arity 2[0m
+  [36m65[0m  [36m  static om/IQuery[0m
+  [36m66[0m  [36m  (query [this props][0m
+  [36m67[0m  [36m         [:last])[0m
+  [36m68[0m  [36m  Object[0m
+  [36m69[0m  [36m  (render [this][0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.488 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.401 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.403 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.398 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.402 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.398 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.413 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.394 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.391 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.393 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.387 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.38 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.383 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.391 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.38 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.38 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.388 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.387 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.398 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.398 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.473 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.511 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.635 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.493 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.484 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.445 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.457 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.428 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.469 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.406 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.423 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.423 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.403 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.425 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.404 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.304 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:61  column:1  ----[0m
+
+  [1mclojure.lang.PersistentList cannot be cast to clojure.lang.Named[0m
+
+  [36m59[0m  [36m             }))[0m
+  [36m60[0m  [36m[0m
+  [33m61[0m  [1m(defui ^:once SpeechInteraction[0m
+  [0m  [0m  [33m^--- clojure.lang.PersistentList cannot be cast to clojure.lang.Named[0m
+  [36m62[0m  [36m  (query [props][0m
+  [36m63[0m  [36m         '[:last])[0m
+  [36m64[0m  [36m  Object[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.397 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.398 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.459 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.524 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.543 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.407 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.599 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.496 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 1.07 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.793 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.564 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.47 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.415 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.453 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.446 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.415 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.574 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.454 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.478 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.499 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.631 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.966 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.454 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.44 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.481 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.777 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.417 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.438 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:76  column:2  ----[0m
+
+  [1mUse of undeclared Var speech.core/utter[0m
+
+  [36m72[0m  [36m                                                                     :key "button"}[0m
+  [36m73[0m  [36m                                                                "Talk to me")]))[0m
+  [36m74[0m  [36m              (dom/p nil "Press the button and start talking to me!")))))[0m
+  [36m75[0m  [36m[0m
+  [33m76[0m  [1m(utter "open paren" {})[0m
+  [0m  [0m  [33m ^--- Use of undeclared Var speech.core/utter[0m
+  [36m77[0m  [36m[0m
+  [36m78[0m  [36m(defcard-om-next speech-interaction-card[0m
+  [36m79[0m  [36m  SpeechInteraction[0m
+  [36m80[0m  [36m  r)[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.631 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:78  column:1  ----[0m
+
+  [1mWrong number of args (2) passed to speech.core/utter[0m
+
+  [36m74[0m  [36m              (dom/p nil "Press the button and start talking to me!")))))[0m
+  [36m75[0m  [36m[0m
+  [36m76[0m  [36m(defn utter [])[0m
+  [36m77[0m  [36m[0m
+  [33m78[0m  [1m(utter "open paren" {})[0m
+  [0m  [0m  [33m^--- Wrong number of args (2) passed to speech.core/utter[0m
+  [36m79[0m  [36m;; {:type "add-typed"}[0m
+  [36m80[0m  [36m[0m
+  [36m81[0m  [36m(defcard-om-next speech-interaction-card[0m
+  [36m82[0m  [36m  SpeechInteraction[0m
+  [36m83[0m  [36m  r)[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.439 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.502 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.425 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.482 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.523 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.413 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.423 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.42 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.421 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.47 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.344 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:85  column:1  ----[0m
+
+  [1mParameter declaration missing[0m
+
+  [36m84[0m  [36m(defmulti detect-intent .startsWith)[0m
+  [33m85[0m  [1m(defmethod detect-intent "open")[0m
+  [0m  [0m  [33m^--- Parameter declaration missing[0m
+  [36m86[0m  [36m(detect-intent )[0m
+  [36m87[0m  [36m(utter "open paren")[0m
+  [36m88[0m  [36m;; => {:action/type :action/add-typed, :uttered "open paren"}[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.423 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.494 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.529 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:82  column:18  ----[0m
+
+  [1mWrong number of args (1) passed to clojure.string/includes?[0m
+
+  [36m79[0m  [36m(defn utter[0m
+  [36m80[0m  [36m  ([utterance] (utter utterance []))[0m
+  [36m81[0m  [36m  ([utterance past-utterances][0m
+  [33m82[0m  [1m   (let [literal (includes? utterance)][0m
+  [0m  [0m  [33m                 ^--- Wrong number of args (1) passed to clojure.string/includes?[0m
+  [36m83[0m  [36m     (match [(.startsWith utterance)])) ;;cljs[0m
+  [36m84[0m  [36m   {:mutation/type :mutation/add-typed[0m
+  [36m85[0m  [36m    :typed utterance}))[0m
+  [36m86[0m  [36m[0m
+  [36m87[0m  [36m(utter "open paren")[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.733 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:82  column:18  ----[0m
+
+  [1mWrong number of args (1) passed to clojure.string/includes?[0m
+
+  [36m79[0m  [36m(defn utter[0m
+  [36m80[0m  [36m  ([utterance] (utter utterance []))[0m
+  [36m81[0m  [36m  ([utterance past-utterances][0m
+  [33m82[0m  [1m   (let [literal (includes? utterance)][0m
+  [0m  [0m  [33m                 ^--- Wrong number of args (1) passed to clojure.string/includes?[0m
+  [36m83[0m  [36m     (match [literal])) ;;cljs[0m
+  [36m84[0m  [36m   {:mutation/type :mutation/add-typed[0m
+  [36m85[0m  [36m    :typed utterance}))[0m
+  [36m86[0m  [36m[0m
+  [36m87[0m  [36m(utter "open paren")[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.689 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.58 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.494 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.438 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.428 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.434 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:82  column:5  ----[0m
+
+  [1mNo such namespace: mutation, could not locate mutation.cljs, mutation.cljc, or Closure namespace ""[0m
+
+  [36m79[0m  [36m(defn utter[0m
+  [36m80[0m  [36m  ([utterance] (utter utterance []))[0m
+  [36m81[0m  [36m  ([utterance past-utterances][0m
+  [33m82[0m  [1m   {mutation/type :mutation/add-type[0m
+  [0m  [0m  [33m    ^--- No such namespace: mutation, could not locate mutation.cljs, mutation.cljc, or Closure namespace ""[0m
+  [36m83[0m  [36m    :type utterance}))[0m
+  [36m84[0m  [36m[0m
+  [36m85[0m  [36m(utter "open paren")[0m
+  [36m86[0m  [36m[0m
+  [36m87[0m  [36m(utter "type defn")[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:82  column:5  ----[0m
+
+  [1mUse of undeclared Var mutation/type[0m
+
+  [36m79[0m  [36m(defn utter[0m
+  [36m80[0m  [36m  ([utterance] (utter utterance []))[0m
+  [36m81[0m  [36m  ([utterance past-utterances][0m
+  [33m82[0m  [1m   {mutation/type :mutation/add-type[0m
+  [0m  [0m  [33m    ^--- Use of undeclared Var mutation/type[0m
+  [36m83[0m  [36m    :type utterance}))[0m
+  [36m84[0m  [36m[0m
+  [36m85[0m  [36m(utter "open paren")[0m
+  [36m86[0m  [36m[0m
+  [36m87[0m  [36m(utter "type defn")[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.485 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.425 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.422 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.428 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.475 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.493 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:63  column:2  ----[0m
+
+  [1mUse of undeclared Var speech.core/thing[0m
+
+  [36m59[0m  [36m(defonce r (om/reconciler[0m
+  [36m60[0m  [36m            {:parser p[0m
+  [36m61[0m  [36m             :state state[0m
+  [36m62[0m  [36m             }))[0m
+  [33m63[0m  [1m(thing "")[0m
+  [0m  [0m  [33m ^--- Use of undeclared Var speech.core/thing[0m
+  [36m64[0m  [36m(defui ^:once SpeechInteraction[0m
+  [36m65[0m  [36m  static om/IQuery[0m
+  [36m66[0m  [36m  (query [props][0m
+  [36m67[0m  [36m         '[:last])[0m
+  [36m68[0m  [36m  Object[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:84  column:22  ----[0m
+
+  [1mUse of undeclared Var speech.core/replace-first[0m
+
+  [36m80[0m  [36m  ([utterance] (utter utterance {}))[0m
+  [36m81[0m  [36m  ([utterance {:keys [mode/type]}][0m
+  [36m82[0m  [36m   (match (.startsWith "type")[0m
+  [36m83[0m  [36m     "type" {:mutation/type :mutation/add-typed[0m
+  [33m84[0m  [1m             :typed (replace-first utterance "type" "")}[0m
+  [0m  [0m  [33m                     ^--- Use of undeclared Var speech.core/replace-first[0m
+  [36m85[0m  [36m     )))[0m
+  [36m86[0m  [36m(replace-first "thing" "type" "")[0m
+  [36m87[0m  [36m(utter "open paren")[0m
+  [36m88[0m  [36m[0m
+  [36m89[0m  [36m(utter "type defn")[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:86  column:2  ----[0m
+
+  [1mUse of undeclared Var speech.core/replace-first[0m
+
+  [36m82[0m  [36m   (match (.startsWith "type")[0m
+  [36m83[0m  [36m     "type" {:mutation/type :mutation/add-typed[0m
+  [36m84[0m  [36m             :typed (replace-first utterance "type" "")}[0m
+  [36m85[0m  [36m     )))[0m
+  [33m86[0m  [1m(replace-first "thing" "type" "")[0m
+  [0m  [0m  [33m ^--- Use of undeclared Var speech.core/replace-first[0m
+  [36m87[0m  [36m(utter "open paren")[0m
+  [36m88[0m  [36m[0m
+  [36m89[0m  [36m(utter "type defn")[0m
+  [36m90[0m  [36m[0m
+  [36m91[0m  [36m(utter "open vector"[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.566 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:84  column:22  ----[0m
+
+  [1mUse of undeclared Var speech.core/replace-first[0m
+
+  [36m80[0m  [36m  ([utterance] (utter utterance {}))[0m
+  [36m81[0m  [36m  ([utterance {:keys [mode/type]}][0m
+  [36m82[0m  [36m   (match (.startsWith "type")[0m
+  [36m83[0m  [36m     "type" {:mutation/type :mutation/add-typed[0m
+  [33m84[0m  [1m             :typed (replace-first utterance "type" "")}[0m
+  [0m  [0m  [33m                     ^--- Use of undeclared Var speech.core/replace-first[0m
+  [36m85[0m  [36m     )))[0m
+  [36m86[0m  [36m(replace-first "thing" "type" "")[0m
+  [36m87[0m  [36m(utter "open paren")[0m
+  [36m88[0m  [36m[0m
+  [36m89[0m  [36m(utter "type defn")[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:86  column:2  ----[0m
+
+  [1mUse of undeclared Var speech.core/replace-first[0m
+
+  [36m82[0m  [36m   (match (.startsWith "type")[0m
+  [36m83[0m  [36m     "type" {:mutation/type :mutation/add-typed[0m
+  [36m84[0m  [36m             :typed (replace-first utterance "type" "")}[0m
+  [36m85[0m  [36m     )))[0m
+  [33m86[0m  [1m(replace-first "thing" "type" "")[0m
+  [0m  [0m  [33m ^--- Use of undeclared Var speech.core/replace-first[0m
+  [36m87[0m  [36m(utter "open paren")[0m
+  [36m88[0m  [36m[0m
+  [36m89[0m  [36m(utter "type defn")[0m
+  [36m90[0m  [36m[0m
+  [36m91[0m  [36m(utter "open vector"[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.473 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.431 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.459 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.482 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:79  column:22  ----[0m
+
+  [1mUse of undeclared Var speech.core/chan[0m
+
+  [36m75[0m  [36m                       (dom/button #js {:onClick start[0m
+  [36m76[0m  [36m                                        :key "button"}[0m
+  [36m77[0m  [36m                                   "Talk to me")]))))[0m
+  [36m78[0m  [36m[0m
+  [33m79[0m  [1m(def new-utterances (chan))[0m
+  [0m  [0m  [33m                     ^--- Use of undeclared Var speech.core/chan[0m
+  [36m80[0m  [36m[0m
+  [36m81[0m  [36m(defn utter[0m
+  [36m82[0m  [36m  ([utterance] (utter utterance {}))[0m
+  [36m83[0m  [36m  ([utterance {:keys [mode/type]}][0m
+  [36m84[0m  [36m   (match (.startsWith utterance)[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.497 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.317 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs  ----[0m
+
+  [1mCould not locate cljs/core/async__init.class or cljs/core/async.clj on classpath.[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.359 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs  ----[0m
+
+  [1mCould not locate cljs/core/async__init.class or cljs/core/async.clj on classpath.[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.282 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs  ----[0m
+
+  [1mCould not locate cljs/core/async__init.class or cljs/core/async.clj on classpath.[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.3 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs  ----[0m
+
+  [1mCould not locate cljs/core/async__init.class or cljs/core/async.clj on classpath.[0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.31 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs  ----[0m
+
+  [1mInvalid :refer, var cljs.core.async/>!! does not exist [0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 1.437 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.517 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.467 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.334 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:66  column:1  ----[0m
+
+  [1mWrong number of args (0) passed to: macros/go-loop[0m
+
+  [36m64[0m  [36m             :state state[0m
+  [36m65[0m  [36m             }))[0m
+  [33m66[0m  [1m(go-loop )[0m
+  [0m  [0m  [33m^--- Wrong number of args (0) passed to: macros/go-loop[0m
+  [36m67[0m  [36m(defui ^:once SpeechInteraction[0m
+  [36m68[0m  [36m  static om/IQuery[0m
+  [36m69[0m  [36m  (query [props][0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.497 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.478 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:69  column:32  ----[0m
+
+  [1mUse of undeclared Var speech.core/taking[0m
+
+  [36m65[0m  [36m             }))[0m
+  [36m66[0m  [36m[0m
+  [36m67[0m  [36m(def utterances-taker (go-loop [][0m
+  [36m68[0m  [36m                        (when-let [utterance (<! new-utterances)][0m
+  [33m69[0m  [1m                          (prr taking)[0m
+  [0m  [0m  [33m                               ^--- Use of undeclared Var speech.core/taking[0m
+  [36m70[0m  [36m                          (swap! state assoc :last utterance))))[0m
+  [36m71[0m  [36m[0m
+  [36m72[0m  [36m(defui ^:once SpeechInteraction[0m
+  [36m73[0m  [36m  static om/IQuery[0m
+  [36m74[0m  [36m  (query [props][0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.631 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.476 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.56 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.472 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.465 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.488 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.649 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.57 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.463 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.469 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.55 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.617 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.685 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.466 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.519 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.522 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.458 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.461 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.504 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.467 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.561 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.503 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.517 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.465 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.465 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.558 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.471 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.464 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.47 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.578 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.551 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:49  column:67  ----[0m
+
+  [1mUse of undeclared Var speech.core/bool?[0m
+
+  [36m45[0m  [36m     (js/console.log "nomatch" res)[0m
+  [36m46[0m  [36m     )[0m
+  [36m47[0m  [36m   })[0m
+  [36m48[0m  [36m[0m
+  [33m49[0m  [1m(gobj/map v (fn [v k t] (js/console.log (.hasOwnProperty t k) k  (bool? (aget t k)))))[0m
+  [0m  [0m  [33m                                                                  ^--- Use of undeclared Var speech.core/bool?[0m
+  [36m50[0m  [36m[0m
+  [36m51[0m  [36m(doall (map (fn [[k v]] (gobj/set recognizer k v)) recognizer-config))[0m
+  [36m52[0m  [36m[0m
+  [36m53[0m  [36m(defn start [][0m
+  [36m54[0m  [36m  (.start recognizer))[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.581 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.279 seconds.[0m
+[36m----  Could not Read  src/speech/core.cljs   line:39  column:50  ----[0m
+
+  [1mMap literal must contain an even number of forms[0m
+
+  [36m37[0m  [36m                        (put! new-utterances[0m
+  [36m38[0m  [36m                              {:is-final (gobj/get o k)[0m
+  [33m39[0m  [1m                               :alternatives }[0m
+  [0m  [0m  [33m                                              ^--- Map literal must contain an even number of forms[0m
+  [36m40[0m  [36m                              v)))))))[0m
+  [36m41[0m  [36m"onerror"[0m
+  [36m42[0m  [36m(fn [res][0m
+
+[36m----  Reader Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.282 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs   line:32  column:6  ----[0m
+
+  [1mlet requires an even number of forms in binding vector[0m
+
+  [36m30[0m  [36m"onresult"[0m
+  [36m31[0m  [36m(fn [res][0m
+  [33m32[0m  [1m  (let [results ][0m
+  [0m  [0m  [33m  ^--- let requires an even number of forms in binding vector[0m
+  [36m33[0m  [36m    (-> (gobj/get res "results")[0m
+  [36m34[0m  [36m        (gobj/forEach[0m
+  [36m35[0m  [36m         (fn [v k o][0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:34  column:35  ----[0m
+
+  [1mUse of undeclared Var speech.core/results[0m
+
+  [36m30[0m  [36m"onresult"[0m
+  [36m31[0m  [36m#(-> (gobj/get % "results")[0m
+  [36m32[0m  [36m     (gobj/forEach[0m
+  [36m33[0m  [36m      (fn [v k o][0m
+  [33m34[0m  [1m        (when (.hasOwnProperty results k)[0m
+  [0m  [0m  [33m                               ^--- Use of undeclared Var speech.core/results[0m
+  [36m35[0m  [36m          (let [_ (def v v)][0m
+  [36m36[0m  [36m            (put! new-utterances[0m
+  [36m37[0m  [36m                  {:is-final (gobj/get o k)[0m
+  [36m38[0m  [36m                   :alternatives (-> v[0m
+  [36m39[0m  [36m                                     (gobj/filter (fn [_ k t] (.hasOwnProperty t k)))[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.514 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.47 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.457 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.593 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.464 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.674 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.552 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.314 seconds.[0m
+[36m----  Could not Analyze  src/speech/core.cljs  ----[0m
+
+  [1mNo such namespace: dirac.runtime, could not locate dirac/runtime.cljs, dirac/runtime.cljc, or Closure namespace "dirac.runtime" [0m
+
+[36m----  Analysis Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.671 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 3.305 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/devcards_out/cljs_deps.js
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:17  column:1  ----[0m
+
+  [1mWrong number of args (3) passed to devtools.core/install![0m
+
+  [36m13[0m  [36m  (:require-macros[0m
+  [36m14[0m  [36m   [cljs.core.async.macros :refer [go go-loop]][0m
+  [36m15[0m  [36m   [devcards.core :as dc :refer [defcard deftest]]))[0m
+  [36m16[0m  [36m[0m
+  [33m17[0m  [1m(devtools/install! :formatters :hints :async)[0m
+  [0m  [0m  [33m^--- Wrong number of args (3) passed to devtools.core/install![0m
+  [36m18[0m  [36m(dirac.runtime/install!)[0m
+  [36m19[0m  [36m[0m
+  [36m20[0m  [36m(enable-console-print!)[0m
+  [36m21[0m  [36m[0m
+  [36m22[0m  [36m(defonce state[0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.689 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.564 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.714 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.772 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.707 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.351 seconds.[0m
+[36m----  Could not Read  src/speech/core.cljs   line:59  column:5  ----[0m
+
+  [1mMap literal must contain an even number of forms[0m
+
+  [36m57[0m  [36m     (js/console.log "nomatch" res)[0m
+  [36m58[0m  [36m     )[0m
+  [33m59[0m  [1m   })[0m
+  [0m  [0m  [33m    ^--- Map literal must contain an even number of forms[0m
+  [36m60[0m  [36m[0m
+  [36m61[0m  [36m(doall (map (fn [[k v]] (gobj/set recognizer k v)) recognizer-config))[0m
+
+[36m----  Reader Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.394 seconds.[0m
+[36m----  Could not Read  src/speech/core.cljs   line:59  column:5  ----[0m
+
+  [1mMap literal must contain an even number of forms[0m
+
+  [36m57[0m  [36m     (js/console.log "nomatch" res)[0m
+  [36m58[0m  [36m     )[0m
+  [33m59[0m  [1m   })[0m
+  [0m  [0m  [33m    ^--- Map literal must contain an even number of forms[0m
+  [36m60[0m  [36m[0m
+  [36m61[0m  [36m(doall (map (fn [[k v]] (gobj/set recognizer k v)) recognizer-config))[0m
+
+[36m----  Reader Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/speech_devcards.js" in 0.418 seconds.[0m
+[36m----  Could not Read  src/speech/core.cljs   line:49  column:21  ----[0m
+
+  [1mMap literal must contain an even number of forms[0m
+
+  [36m47[0m  [36m                                  js->clj[0m
+  [36m48[0m  [36m                                  vals)[0m
+  [33m49[0m  [1m                })))))[0m
+  [0m  [0m  [33m                 ^--- Map literal must contain an even number of forms[0m
+  [36m50[0m  [36m"onerror"[0m
+  [36m51[0m  [36m(fn [res][0m
+  [36m52[0m  [36m  (js/console.log "error" res)[0m
+
+[36m----  Reader Error : Please see src/speech/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.619 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:61  column:6  ----[0m
+
+  [1mWrong number of args (2) passed to speech.core/prr[0m
+
+  [36m57[0m  [36m     (js/console.log "nomatch" res)[0m
+  [36m58[0m  [36m     )[0m
+  [36m59[0m  [36m   "onend"[0m
+  [36m60[0m  [36m   (fn [res][0m
+  [33m61[0m  [1m     (prr res "end"))[0m
+  [0m  [0m  [33m     ^--- Wrong number of args (2) passed to speech.core/prr[0m
+  [36m62[0m  [36m   })[0m
+  [36m63[0m  [36m[0m
+  [36m64[0m  [36m(doall (map (fn [[k v]] (gobj/set recognizer k v)) recognizer-config))[0m
+  [36m65[0m  [36m[0m
+  [36m66[0m  [36m(defn start [][0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.767 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.63 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:67  column:39  ----[0m
+
+  [1mUse of undeclared Var speech.core/Date[0m
+
+  [36m63[0m  [36m   (fn [res][0m
+  [36m64[0m  [36m     (js/console.log res "audioend"))[0m
+  [36m65[0m  [36m   "onaudiostart"[0m
+  [36m66[0m  [36m   (fn [res][0m
+  [33m67[0m  [1m     (js/console.log res "audiostart" (Date.)))[0m
+  [0m  [0m  [33m                                      ^--- Use of undeclared Var speech.core/Date[0m
+  [36m68[0m  [36m   })[0m
+  [36m69[0m  [36m[0m
+  [36m70[0m  [36m(doall (map (fn [[k v]] (gobj/set recognizer k v)) recognizer-config))[0m
+  [36m71[0m  [36m[0m
+  [36m72[0m  [36m(defn start [][0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/speech/core.cljs   line:67  column:39  ----[0m
+
+  [1mUse of undeclared Var speech.core/Date[0m
+
+  [36m63[0m  [36m   (fn [res][0m
+  [36m64[0m  [36m     (js/console.log res "audioend"))[0m
+  [36m65[0m  [36m   "onaudiostart"[0m
+  [36m66[0m  [36m   (fn [res][0m
+  [33m67[0m  [1m     (js/console.log res "audiostart" (Date.)))[0m
+  [0m  [0m  [33m                                      ^--- Use of undeclared Var speech.core/Date[0m
+  [36m68[0m  [36m   })[0m
+  [36m69[0m  [36m[0m
+  [36m70[0m  [36m(doall (map (fn [[k v]] (gobj/set recognizer k v)) recognizer-config))[0m
+  [36m71[0m  [36m[0m
+  [36m72[0m  [36m(defn start [][0m
+
+[36m----  Compiler Warning : Please see src/speech/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.641 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.576 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.572 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.716 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
+[0mCompiling "resources/public/js/compiled/speech_devcards.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/speech_devcards.js" in 0.699 seconds.[0m
+notifying browser that file changed:  out/speech/core.js
