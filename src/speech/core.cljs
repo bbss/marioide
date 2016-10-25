@@ -61,6 +61,7 @@
      (js/console.log res "end" (js/Date.)))
    "onsoundstart"
    (fn [res]
+     (swap! state assoc :last {})
      (js/console.log res "soundstart" (js/Date.)))
    })
 
@@ -109,7 +110,7 @@
 (def utterances-taker
   (go-loop []
     (when-let [utterance (<! new-utterances)]
-      #_(def recognized-sequence (conj recognized-sequence utterance))
+      (def recognized-sequence (conj recognized-sequence utterance))
       (swap! state update-in [:last (:index utterance)] (fn [] utterance))
       (recur))))
 
@@ -119,6 +120,8 @@
                                       "black"
                                       "gray")}}
             (dom/span nil (first alternatives))))
+
+#_(cljs.pprint/pprint recognized-sequence)
 
 (defui ^:once SpeechInteraction
   static om/IQuery
@@ -152,6 +155,7 @@
    "pairings" "paren"
    "settings" "paren"
    "fairings" "paren"
+   "currents" "paren"
    "parenthesis" "paren"
    "parentheses" "paren"
    "brace" "brace"
