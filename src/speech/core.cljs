@@ -25,6 +25,70 @@
 
 (defn prr [& args] (js/console.log args))
 
+
+(defn containing-symbols [utterance bias-dictionary]
+  (->> (.split utterance " ")
+       (filter (fn [word]
+                 (get bias-dictionary (.toLowerCase word))))
+       (map bias-dictionary)))
+
+(def open-symbol-bias
+  {"paren" "paren"
+   "parens" "paren"
+   "theron" "paren"
+   "pairings" "paren"
+   "settings" "paren"
+   "fairings" "paren"
+   "currents" "paren"
+   "parenthesis" "paren"
+   "parentheses" "paren"
+   "brace" "brace"
+   "braces" "brace"
+   "bracket" "bracket"
+   "brackets" "bracket"})
+
+(def symbol-name-to-symbol
+  {"paren" "("
+   "brace" "{"
+   "bracket" "["})
+
+(def open-symbol-matcher
+  {:predicates [(fn [utterance]
+                  (.startsWith (.toLowerCase utterance) "open"))
+                (fn [utterance]
+                  (not (empty? (containing-symbols utterance open-symbol-bias))))]
+   :actions-fn (fn [utterance _]
+                (->> (containing-symbols utterance open-symbol-bias)
+                     (map symbol-name-to-symbol)
+                     (map (fn [symbol]
+                            {:action/type :action/open-symbol
+                             :action/value symbol}))))})
+
+(defn utter
+  ([utterances] (utter utterances {}))
+  ([utterances _]
+   (map (fn [utterance]
+             (if (every? true?
+                         (map (fn [pred] (pred utterance))
+                              (:predicates open-symbol-matcher)))
+               ((:actions-fn open-symbol-matcher) utterance)
+               [{:action/type :action/typing
+                 :action/value utterance}]))
+           utterances)
+   ;;aantal mutations committen na debounce
+   ;;welke mutations horen bij gesprek
+   ;;append de is finals
+   ;;geef user keuze
+   ;;elke isfinal meerdere keuzes, scoring bepaalt welke keuze gemaakt wordt
+   ;;default keuze na timer of nieuwe utterance
+   ))
+(defui InterpretationOption
+  static om/IQuery
+  (query [this] [:text :actions :result])
+  Object
+  (render [this]
+          (dom/div nil "bla")))
+
 (def new-utterances (chan))
 
 (defonce recognizer (js/webkitSpeechRecognition.))
@@ -85,18 +149,16 @@
                      next-utterance)))
           sequence))
 
-
-(let []
-  (swap! state assoc :last {})
-  (replicate-interval-sending (:recognized-sequence def-recognizer)
-                              #(swap! state update-in [:last (:index %)] (fn [] %))))
-
-
 (defmulti read om/dispatch)
 
 (defmethod read :last
   [{:keys [state]} k _]
   {:value (get @state k "")})
+
+(defmethod read :interaction/options
+  [{:keys [state]} k _]
+  {:value (fn [])})
+
 
 (def p (om/parser {:read read}))
 
@@ -110,7 +172,8 @@
 (def utterances-taker
   (go-loop []
     (when-let [utterance (<! new-utterances)]
-      (def recognized-sequence (conj recognized-sequence utterance))
+      #_(def recognized-sequence (conj recognized-sequence utterance))
+      (utter utterance)
       (swap! state update-in [:last (:index utterance)] (fn [] utterance))
       (recur))))
 
@@ -126,10 +189,11 @@
 (defui ^:once SpeechInteraction
   static om/IQuery
   (query [props]
-         '[:last])
+         '[:last :interaction/options])
   Object
   (render [this]
-          (let [{:keys [last]} (om/props this)]
+          (let [{:keys [last interaction/options]} (om/props this)]
+            (prr "options")
             (dom/span nil
                       [(if (not (empty? last))
                          (dom/span #js {:key "last"} "I heard you say:"
@@ -141,61 +205,6 @@
                        (dom/button #js {:onClick start
                                         :key "button"}
                                    "Talk to me")]))))
-
-(defn containing-symbols [utterance bias-dictionary]
-  (->> (.split utterance " ")
-       (filter (fn [word]
-                 (get bias-dictionary (.toLowerCase word))))
-       (map bias-dictionary)))
-
-(def open-symbol-bias
-  {"paren" "paren"
-   "parens" "paren"
-   "theron" "paren"
-   "pairings" "paren"
-   "settings" "paren"
-   "fairings" "paren"
-   "currents" "paren"
-   "parenthesis" "paren"
-   "parentheses" "paren"
-   "brace" "brace"
-   "braces" "brace"
-   "bracket" "bracket"
-   "brackets" "bracket"})
-
-(def symbol-name-to-symbol
-  {"paren" "("
-   "brace" "{"
-   "bracket" "["})
-
-(def open-symbol-matcher
-  {:predicates [(fn [utterance]
-                  (.startsWith (.toLowerCase utterance) "open"))
-                (fn [utterance]
-                  (not (empty? (containing-symbols utterance open-symbol-bias))))]
-   :actions-fn (fn [utterance _]
-                (->> (containing-symbols utterance open-symbol-bias)
-                     (map symbol-name-to-symbol)
-                     (map (fn [symbol]
-                            {:action/type :action/open-symbol
-                             :action/value symbol}))))})
-
-(defn utter
-  ([utterance] (utter utterance {}))
-  ([utterance _]
-   (if (every? true?
-               (map (fn [pred] (pred utterance))
-                    (:predicates open-symbol-matcher)))
-     ((:actions-fn open-symbol-matcher) utterance)
-     [{:action/type :action/typing
-       :action/value utterance}])
-   ;;aantal mutations committen na debounce
-   ;;welke mutations horen bij gesprek
-   ;;append de is finals
-   ;;geef user keuze
-   ;;elke isfinal meerdere keuzes, scoring bepaalt welke keuze gemaakt wordt
-   ;;default keuze na timer of nieuwe utterance
-   ))
 
 (defcard-om-next speech-interaction-card
   SpeechInteraction
@@ -209,6 +218,12 @@
       (om/add-root! r SpeechInteraction target)
       (reset! root SpeechInteraction))
     (.forceUpdate (om/app-root r))))
+
+(let []
+  (swap! state assoc :last {})
+  (replicate-interval-sending (:recognized-sequence def-recognizer)
+                              #(put! new-utterances %)
+                              #_(swap! state update-in [:last (:index %)] (fn [] %))))
 
 ;; remember to run lein figwheel and then browse to
 ;; http://localhost:3449/cards.html
