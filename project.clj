@@ -16,6 +16,9 @@
                  [binaryage/devtools "0.8.2"]
 
                  [org.clojure/core.match "0.3.0-alpha4"]
+                 [cljsjs/codemirror "5.19.0-0"]
+                 [replumb "0.2.4"]
+                 [parinfer-cljs "1.5.1-0"]
 
                  ;; need to specify this for sablono
                  ;; when not using devcards
