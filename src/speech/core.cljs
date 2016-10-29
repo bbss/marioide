@@ -1,5 +1,7 @@
 (ns speech.core
   (:require
+   [speech.fixtures.definition :refer [def-recognizer]]
+   [speech.editor :refer [e-state create-editor-el! start-editor-sync!]]
    [sablono.core :as sab :include-macros true]
    [goog.object :as gobj]
    [om.dom :as dom]
@@ -10,12 +12,15 @@
    [clojure.string :refer [includes? replace-first]]
    [dirac.runtime]
    [devtools.core :as devtools]
-   [speech.fixtures.definition :refer [def-recognizer]])
+   cljsjs.codemirror
+   [parinfer-cljs.core :refer [indent-mode paren-mode]]
+   )
   (:require-macros
    [cljs.core.async.macros :refer [go go-loop]]
-   [devcards.core :as dc :refer [defcard deftest]]))
+   [devcards.core :as dc :refer [defcard deftest dom-node]]))
 
 (devtools/install! [:formatters :hints :async])
+
 (dirac.runtime/install!)
 
 (enable-console-print!)
@@ -24,7 +29,6 @@
   (atom {}))
 
 (defn prr [& args] (js/console.log args))
-
 
 (defn containing-symbols [utterance bias-dictionary]
   (->> (.split utterance " ")
@@ -82,6 +86,7 @@
    ;;elke isfinal meerdere keuzes, scoring bepaalt welke keuze gemaakt wordt
    ;;default keuze na timer of nieuwe utterance
    ))
+
 (defui InterpretationOption
   static om/IQuery
   (query [this] [:text :actions :result])
@@ -167,12 +172,12 @@
              :state state
              }))
 
-(def recognized-sequence [])
+(def utterance-recording [])
 
 (def utterances-taker
   (go-loop []
     (when-let [utterance (<! new-utterances)]
-      #_(def recognized-sequence (conj recognized-sequence utterance))
+      #_(def utterance-recording (conj utterance-recording utterance))
       (utter utterance)
       (swap! state update-in [:last (:index utterance)] (fn [] utterance))
       (recur))))
@@ -193,7 +198,6 @@
   Object
   (render [this]
           (let [{:keys [last interaction/options]} (om/props this)]
-            (prr "options")
             (dom/span nil
                       [(if (not (empty? last))
                          (dom/span #js {:key "last"} "I heard you say:"
@@ -206,9 +210,22 @@
                                         :key "button"}
                                    "Talk to me")]))))
 
+
+
 (defcard-om-next speech-interaction-card
   SpeechInteraction
   r)
+
+(defcard parinfer-codemirror-card
+  (dom-node (fn [state node]
+              (if (not (:editor @e-state))
+                (let [_ (set! (.-innerHTML node) "<div></div>")
+                      textarea (.appendChild node
+                                             (js/document.createElement "textarea"))]
+                  (create-editor-el! textarea :editor)
+
+                  (start-editor-sync!))
+                node))))
 
 (defonce root (atom nil))
 
