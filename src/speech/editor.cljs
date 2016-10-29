@@ -1,7 +1,13 @@
 (ns speech.editor
   (:require
+   [speech.eval :refer [eval]]
    [clojure.string :as string :refer [join]]
    [parinfer-cljs.core :refer [indent-mode paren-mode]]
+   cljsjs.codemirror
+   cljsjs.codemirror.mode.clojure
+   cljsjs.codemirror.addon.edit.matchbrackets
+   cljsjs.codemirror.keymap.emacs
+   cljsjs.codemirror.addon.selection.active-line
    ))
 
 (def frame-updates (atom {}))
@@ -71,6 +77,22 @@
         :else nil))))
 
 
+(defn selection [cm]
+  (map (fn [s]
+         (clojure.string/replace
+          s
+          "[object Object]" ""))
+       (.getSelections cm (.listSelections cm))))
+
+(defn cm-selection-or-form [cm]
+  (let [selection (or (when (= (first (selection cm)) "")
+                        (.getValue cm))
+                      (first (selection cm)))]
+    selection))
+
+(defn current-selection [cm]
+  (cm-selection-or-form cm))
+
 (defn compute-cursor-dx
   [cursor change]
   (when change
@@ -133,7 +155,6 @@
         prev-state (get-prev-state cm)
 
         ;; format the text
-        _ (js/console.log current-text (indent-mode current-text options))
         new-text
         (case mode
           :indent-mode
@@ -177,6 +198,8 @@
 ;;----------------------------------------------------------------------
 ;; Setup
 ;;----------------------------------------------------------------------
+(def key-map
+  #js {"Ctrl-Enter" (fn [cm] (eval (current-selection cm)))})
 
 (defn parinferize!
   "Add parinfer goodness to a codemirror editor"
@@ -206,6 +229,10 @@
        (.on cm "change" on-change)
        (.on cm "beforeChange" before-change)
        (.on cm "cursorActivity" on-cursor-activity)
+       (.addKeyMap cm "emacs")
+       (.addKeyMap cm key-map)
+       (set! (.-save (.-commands js/CodeMirror))
+             (fn [cm] ))
 
        cm))))
 

@@ -2,6 +2,7 @@
   (:require
    [speech.fixtures.definition :refer [def-recognizer]]
    [speech.editor :refer [e-state create-editor-el! start-editor-sync!]]
+   [speech.eval :refer [ConsoleElement console-element eval-results]]
    [sablono.core :as sab :include-macros true]
    [goog.object :as gobj]
    [om.dom :as dom]
@@ -12,7 +13,6 @@
    [clojure.string :refer [includes? replace-first]]
    [dirac.runtime]
    [devtools.core :as devtools]
-   cljsjs.codemirror
    [parinfer-cljs.core :refer [indent-mode paren-mode]]
    )
   (:require-macros
@@ -226,6 +226,8 @@
 
                   (start-editor-sync!))
                 node))))
+(defcard results
+  eval-results)
 
 (defonce root (atom nil))
 
