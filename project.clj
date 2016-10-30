@@ -20,13 +20,18 @@
                  [replumb "0.2.4"]
                  [parinfer-cljs "1.5.1-0"]
 
-                 ;; need to specify this for sablono
-                 ;; when not using devcards
                  [cljsjs/react "15.3.1-0"]
                  [cljsjs/react-dom "15.3.1-0"]
                  [devcards-om-next "0.3.0"]
-                 #_[org.omcljs/om "1.0.0-alpha46"]
-                 #_[reagent "0.6.0"]
+
+                 [yada "1.1.35"]
+                 [aleph "0.4.2-alpha8"]
+                 [manifold "0.1.5"]
+                 [bidi "2.0.10"]
+                 [clj-http "3.3.0"]
+                 [environ "1.1.0"]
+                 [tentacles "0.5.1"]
+                 [alandipert/enduro "1.2.0"]
                  ]
 
   :plugins [[lein-figwheel "0.5.8"]

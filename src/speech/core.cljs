@@ -160,7 +160,7 @@
   [{:keys [state]} k _]
   {:value (get @state k "")})
 
-(defmethod read :interaction/options
+o(defmethod read :interaction/options
   [{:keys [state]} k _]
   {:value (fn [])})
 
@@ -226,6 +226,7 @@
 
                   (start-editor-sync!))
                 node))))
+
 (defcard results
   eval-results)
 
