@@ -14,6 +14,7 @@
                  [org.clojure/core.async "0.2.395"]
                  [binaryage/dirac "0.7.2"]
                  [binaryage/devtools "0.8.2"]
+                 [alandipert/enduro "1.2.0"]
 
                  [org.clojure/core.match "0.3.0-alpha4"]
                  [cljsjs/codemirror "5.19.0-0"]

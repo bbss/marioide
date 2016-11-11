@@ -4,6 +4,7 @@
             [bidi.ring :refer [redirect]]
             [bidi.vhosts :refer [vhosts-model]]
             [yada.oauth :as oauth]
+            [alandipert.enduro :as e]
             [clojure.string :as str]
             [buddy.core.hash :as hash]
             [clj-http.client :as client]
@@ -13,8 +14,27 @@
             [tentacles.users :as users]
             [manifold.deferred :as d]))
 
+(def produced-types
+  #{"application/transit+json"
+                                        ;"application/transit+msgpack"
+    "application/json"
+    "application/edn"
+    "text/html"})
+
+
+(def consumed-types
+  #{"application/transit+json"
+                                        ;"application/transit+msgpack"
+    "application/json"
+    "application/edn"})
+
+(def state (e/file-atom {} "/tmp/marioide.clj" :pending-dir "/tmp"))
+
+(defn get-token [{:keys [id]}]
+  (:at (first (filter (comp  (partial = id) :id) (:users @state)))))
+
 (defn build-routes []
-  (try ["" [["/security"
+  (try ["" [["/api"
              [
               ["" (yada/redirect ::index)]
               ["/" (yada/redirect ::index)]
@@ -59,24 +79,37 @@
                                                                            (map :email)
                                                                            first)
                                                                     name (:name (users/me {:oauth-token at}))]
-                                                                   (println {:id email
-                                                                             :name name
-                                                                             :at at})
-                                                                   {:id email
-                                                                    :name name}))})]
-                            ["/welcome"
-                             (yada/resource
-                              {:id ::welcome
+                                                         (e/swap! state update :users (fn [users]
+                                                                                        (conj users {:id email
+                                                                                                     :name name
+                                                                                                     :at at})))
+                                                         {:id email
+                                                          :name name}))})]
+                            ["/gist"
+                             [["" (-> (yada/resource
+                                       {:methods {:get {:response
+                                                        (fn [ctx] (def posted ctx)
+                                                                    (if-let [user (-> ctx :authentication (get "default"))]
+                                                                      "ok" #_(gists/gists {:oauth-token (get-token user)})
+                                                                      "unauthed"))
+                                                        :produces {:media-type produced-types}}
+                                                  :post {:response (fn [ctx] (def posted ctx)
+                                                                     true)
+                                                        :produces {:media-type produced-types}}}})
+                                      (assoc :id ::index))]
+                              ["/list"
+                               (yada/resource
+                                {:id ::welcome
 
-                               :access-control
-                               {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
+                                 :access-control
+                                 {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
 
-                               :methods
-                               {:get {:produces "text/plain"
-                                      :response (fn [ctx]
-                                                  (let [data (-> ctx :authentication (get "default"))]
-                                                    (println ctx)
-                                                    "bla"))}}})]])]]]
+                                 :methods
+                                 {:get {:produces produced-types
+                                        :response (fn [ctx]
+                                                    (if-let [user (-> ctx :authentication (get "default"))]
+                                                      (gists/gists {:oauth-token (get-token user)})
+                                                      "unauthed"))}}})]]]])]]]
             ["/cards.html" (-> (yada (clojure.java.io/file "resources/public/cards.html"))
                                (assoc :id ::cards))]
             ["/" (yada.resources.file-resource/new-directory-resource
@@ -84,14 +117,12 @@
        (catch Throwable e
          (println e))))
 
+(declare svr)
 
-(def my-gists (gists/gists {:oauth-token "4a2a507bd81fbe349bcb2a260bfec0cc209e9f96"}))
-
-(def svr
-  (yada/listener (vhosts-model
-                  [{:scheme :http :host "localhost:3000"}
-                   (build-routes)])
-                 {:port 3000}))
-
-
-((:close svr))
+(defn restart []
+  ((:close svr))
+  (def svr
+    (yada/listener (vhosts-model
+                    [{:scheme :http :host "localhost:3000"}
+                     (build-routes)])
+                   {:port 3000})))
