@@ -39,7 +39,7 @@
               ["" (yada/redirect ::index)]
               ["/" (yada/redirect ::index)]
               ["/index.html" (-> (yada/resource
-                                  {:methods {:get {:response (fn [ctx] "sup doge")
+                                  {:methods {:get {:response (fn [ctx] "/cards.html")
                                                    :produces {:media-type "text/plain"}}}})
                                  (assoc :id ::index))]
               ["/oauth2" (let [github-client-id (env :gh-client-id)
@@ -87,15 +87,24 @@
                                                           :name name}))})]
                             ["/gist"
                              [["" (-> (yada/resource
-                                       {:methods {:get {:response
-                                                        (fn [ctx] (def posted ctx)
-                                                                    (if-let [user (-> ctx :authentication (get "default"))]
-                                                                      "ok" #_(gists/gists {:oauth-token (get-token user)})
-                                                                      "unauthed"))
-                                                        :produces {:media-type produced-types}}
-                                                  :post {:response (fn [ctx] (def posted ctx)
-                                                                     true)
-                                                        :produces {:media-type produced-types}}}})
+                                       {:access-control
+                                        {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
+                                        :methods {:get {:response
+                                                        (fn [ctx]
+                                                          (if-let [user (-> ctx :authentication (get "default"))]
+                                                            (let [gist-id (get-in ctx [:parameters :query "gist-id"])]
+                                                              (gists/specific-gist gist-id
+                                                                                   {:oauth-token (get-token user)})
+                                                              )
+                                                            "unauthed"))
+                                                        :produces {:media-type produced-types}
+                                                        :consumes {:media-type consumed-types}}
+                                                  :post {:response (fn [ctx]
+                                                                     (if-let [user (-> ctx :authentication (get "default"))]
+                                                                       (gists/create-gist {:oauth-token (get-token user)})
+                                                                       "unauthed"))
+                                                         :produces {:media-type produced-types}
+                                                         :consumes {:media-type consumed-types}}}})
                                       (assoc :id ::index))]
                               ["/list"
                                (yada/resource
@@ -120,7 +129,7 @@
 (declare svr)
 
 (defn restart []
-  ((:close svr))
+  (when (:close svr) ((:close svr)))
   (def svr
     (yada/listener (vhosts-model
                     [{:scheme :http :host "localhost:3000"}

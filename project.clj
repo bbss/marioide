@@ -10,7 +10,7 @@
                  [org.clojure/clojurescript "1.9.229"]
                  [devcards "0.2.2"]
                  [sablono "0.7.4"]
-                 [org.omcljs/om "1.0.0-alpha46"]
+                 [org.omcljs/om "1.0.0-alpha47"]
                  [org.clojure/core.async "0.2.395"]
                  [binaryage/dirac "0.7.2"]
                  [binaryage/devtools "0.8.2"]
@@ -32,6 +32,7 @@
                  [clj-http "3.3.0"]
                  [environ "1.1.0"]
                  [tentacles "0.5.1"]
+                 [cljs-http "0.1.42"]
                  [alandipert/enduro "1.2.0"]
                  ]
 

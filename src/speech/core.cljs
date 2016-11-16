@@ -7,17 +7,17 @@
    [goog.object :as gobj]
    [om.dom :as dom]
    [om.next :as om :refer-macros [defui]]
-   [devcards-om-next.core :refer-macros [defcard-om-next om-next-root]]
    [cljs.core.match :refer-macros [match]]
    [cljs.core.async :refer [chan put! timeout take! <! >!]]
    [clojure.string :refer [includes? replace-first]]
    [dirac.runtime]
    [devtools.core :as devtools]
    [parinfer-cljs.core :refer [indent-mode paren-mode]]
-   )
+   [cljs-http.client :as http])
   (:require-macros
    [cljs.core.async.macros :refer [go go-loop]]
-   [devcards.core :as dc :refer [defcard deftest dom-node]]))
+   [devcards.core :as dc :refer [defcard defcard-om-next deftest dom-node]])
+  )
 
 (devtools/install! [:formatters :hints :async])
 
@@ -28,7 +28,180 @@
 (defonce state
   (atom {}))
 
+(defn deep-merge [& xs]
+  "Merges nested maps without overwriting existing keys."
+  (if (every? map? xs)
+    (apply merge-with deep-merge xs)
+    (last xs)))
+
 (defn prr [& args] (js/console.log args))
+
+(defn ppr [& args] (cljs.pprint/pprint args))
+
+(def base-url "http://localhost:3000/api/oauth2")
+
+(defui File
+  static om/Ident
+  (ident [this {:keys [file/id]}]
+         [:file/id id])
+  static om/IQuery
+  (query [this]
+         [:file/content :file/id])
+  Object
+  (render [this]
+          (let [{:keys [:file/content]} (om/props this)]
+            (dom/p nil content))))
+
+(def file-component (om/factory File {:keyfn :file/id}))
+
+(defui Gist
+  static om/Ident
+  (ident [this {:keys [gist/id]}]
+         [:gist/id id])
+  static om/IQuery
+  (query [this]
+         [:gist/id :gist/description {:gist/files (om/get-query File)}])
+  Object
+  (render [this]
+          (let [{:keys [gist/description
+                        gist/files]} (om/props this)]
+            (dom/div nil [(dom/p #js {:key "descr"} description)
+                          (for [file files]
+                            (file-component file))]))))
+
+(def gist-component (om/factory Gist {:keyfn :gist/id}))
+
+(defui Gists
+  static om/IQuery
+  (query [this]
+         [{:gist/list (om/get-query Gist)}])
+  Object
+  (render [this]
+          (let [{:keys [gist/list]} (om/props this)]
+            (dom/div nil (for [gist list]
+                           (gist-component gist))))))
+
+(defmulti read om/dispatch)
+
+(def p (om/parser {:read read}))
+
+(defn grab-and-merge-file [merge-cb state gist-id]
+  (go (take! (http/get (str base-url "/gist")
+                       {:query-params
+                        {"gist-id" gist-id}})
+             (fn [{:keys [body]}]
+               (let [merged
+                     (into {}
+                           (map (fn [[file-id {:keys [content]}]]
+                                   [:file/id {(str gist-id file-id)
+                                              {:file/content content}}])
+                                (:files body)))]
+                 (merge-cb (deep-merge
+                            {:file/id (:file/id @state)}
+                            merged)))))))
+
+(defn extract-gists [query state merge-cb {:keys [body]}]
+  (merge-cb (om/tree->db (om/get-query Gists)
+                         {:gist/list
+                          (into
+                           []
+                           (doall (map (fn [gist]
+                                         (grab-and-merge-file merge-cb state (:id gist))
+                                         (-> gist
+                                             (clojure.set/rename-keys
+                                              {:id :gist/id :files :gist/files
+                                               :description :gist/description})
+                                             (update :gist/files
+                                                     (fn [files]
+                                                       (into []
+                                                             (map (fn [[file-id file]]
+                                                                    {:file/id (str (:id gist)
+                                                                                   file-id)})
+                                                                  files))))))
+                                       body)))}
+                         true
+                         )))
+
+(def r (om/reconciler {:state state
+                       :parser p
+                       :remotes [:gist/list]
+                       :send (fn [{:keys [:gist/list]} cb]
+                               (go (take! (http/get (str base-url "/gist/list"))
+                                          (partial extract-gists
+                                                   list state cb))))}))
+
+(defmethod read :gist/list
+  [{:keys [state] :as env} k _]
+  {:value (get (om/db->tree (om/get-query Gists)
+                            @state
+                            @state
+                            )
+               k
+               [])
+   :gist/list true})
+
+(defcard-om-next gists-card
+  Gists
+  r)
+
+(defcard parinfer-codemirror-card
+  (dom-node (fn [state node]
+              (if (not (:editor @e-state))
+                (let [_ (set! (.-innerHTML node) "<div></div>")
+                      textarea (.appendChild node
+                                             (js/document.createElement "textarea"))]
+                  (create-editor-el! textarea :editor)
+
+                  (start-editor-sync!))
+                node))))
+
+(defcard results
+  eval-results)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 (defn containing-symbols [utterance bias-dictionary]
   (->> (.split utterance " ")
@@ -136,42 +309,6 @@
 
 (doall (map (fn [[k v]] (gobj/set recognizer k v)) recognizer-config))
 
-(defn start []
-  (.start recognizer))
-
-(defn replicate-interval-sending [sequence send-fn]
-  (reduce (fn [current-utterance next-utterance]
-            (let [period-from-start (or (:period-from-start current-utterance)
-                                        (let []
-                                          (send-fn current-utterance)
-                                          0))
-                  period-between (- (:at next-utterance)
-                                    (:at current-utterance))]
-              (js/setTimeout (fn [] (send-fn (dissoc next-utterance :period-from-start)))
-                             period-from-start)
-              (merge {:period-from-start (+ period-from-start
-                                            period-between)}
-                     next-utterance)))
-          sequence))
-
-(defmulti read om/dispatch)
-
-(defmethod read :last
-  [{:keys [state]} k _]
-  {:value (get @state k "")})
-
-o(defmethod read :interaction/options
-  [{:keys [state]} k _]
-  {:value (fn [])})
-
-
-(def p (om/parser {:read read}))
-
-(defonce r (om/reconciler
-            {:parser p
-             :state state
-             }))
-
 (def utterance-recording [])
 
 (def utterances-taker
@@ -189,7 +326,39 @@ o(defmethod read :interaction/options
                                       "gray")}}
             (dom/span nil (first alternatives))))
 
-#_(cljs.pprint/pprint recognized-sequence)
+(defn start []
+  (.start recognizer))
+
+
+(defn replicate-interval-sending [sequence send-fn]
+  (reduce (fn [current-utterance next-utterance]
+            (let [period-from-start (or (:period-from-start current-utterance)
+                                        (let []
+                                          (send-fn current-utterance)
+                                          0))
+                  period-between (- (:at next-utterance)
+                                    (:at current-utterance))]
+              (js/setTimeout (fn [] (send-fn (dissoc next-utterance :period-from-start)))
+                             period-from-start)
+              (merge {:period-from-start (+ period-from-start
+                                            period-between)}
+                     next-utterance)))
+          sequence))
+
+#_(let []
+  (swap! state assoc :last {})
+  (replicate-interval-sending (:recognized-sequence def-recognizer)
+                              #(put! new-utterances %)
+                              #_(swap! state update-in [:last (:index %)] (fn [] %))))
+
+(defmethod read :last
+  [{:keys [state ast]} k _]
+  {:value (get @state k "")})
+
+(defmethod read :interaction/options
+  [{:keys [state]} k _]
+  {:value []})
+
 
 (defui ^:once SpeechInteraction
   static om/IQuery
@@ -197,7 +366,7 @@ o(defmethod read :interaction/options
          '[:last :interaction/options])
   Object
   (render [this]
-          (let [{:keys [last interaction/options]} (om/props this)]
+          (let [{:keys [last interaction/options gist/list]} (om/props this)]
             (dom/span nil
                       [(if (not (empty? last))
                          (dom/span #js {:key "last"} "I heard you say:"
@@ -209,41 +378,3 @@ o(defmethod read :interaction/options
                        (dom/button #js {:onClick start
                                         :key "button"}
                                    "Talk to me")]))))
-
-
-
-(defcard-om-next speech-interaction-card
-  SpeechInteraction
-  r)
-
-(defcard parinfer-codemirror-card
-  (dom-node (fn [state node]
-              (if (not (:editor @e-state))
-                (let [_ (set! (.-innerHTML node) "<div></div>")
-                      textarea (.appendChild node
-                                             (js/document.createElement "textarea"))]
-                  (create-editor-el! textarea :editor)
-
-                  (start-editor-sync!))
-                node))))
-
-(defcard results
-  eval-results)
-
-(defonce root (atom nil))
-
-(defn init []
-  (if (nil? @root)
-    (let [target (js/document.getElementById "com-rigsomelight-devcards-main")]
-      (om/add-root! r SpeechInteraction target)
-      (reset! root SpeechInteraction))
-    (.forceUpdate (om/app-root r))))
-
-(let []
-  (swap! state assoc :last {})
-  (replicate-interval-sending (:recognized-sequence def-recognizer)
-                              #(put! new-utterances %)
-                              #_(swap! state update-in [:last (:index %)] (fn [] %))))
-
-;; remember to run lein figwheel and then browse to
-;; http://localhost:3449/cards.html
