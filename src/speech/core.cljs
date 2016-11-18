@@ -11,6 +11,7 @@
    [cljs.core.async :refer [chan put! timeout take! <! >!]]
    [clojure.string :refer [includes? replace-first]]
    [dirac.runtime]
+   [devcards-om-next.core :refer-macros [#_defcard-om-next om-next-root]]
    [devtools.core :as devtools]
    [parinfer-cljs.core :refer [indent-mode paren-mode]]
    [cljs-http.client :as http])
@@ -34,6 +35,7 @@
     (apply merge-with deep-merge xs)
     (last xs)))
 
+
 (defn prr [& args] (js/console.log args))
 
 (defn ppr [& args] (cljs.pprint/pprint args))
@@ -48,9 +50,24 @@
   (query [this]
          [:file/content :file/id])
   Object
+  (componentDidUpdate [this prev-props prev-state]
+                      (let [{:keys [:file/id :file/content]} (om/props this)
+                            editor (:file/editor (om/get-state this))
+                            existing-textarea (dom/node this id)
+                            prev-content (:file/content prev-props)]
+                        (when (and (not editor) content)
+                          (om/set-state!
+                           this
+                           {:file/editor (create-editor-el!
+                                                      existing-textarea
+                                                      id
+                                                      {:text (str content)})}))))
   (render [this]
-          (let [{:keys [:file/content]} (om/props this)]
-            (dom/p nil content))))
+          (let [{:keys [:file/content :file/id]} (om/props this)]
+            (dom/div #js {}
+                     [(dom/textarea #js {:key id :ref id
+                                         :value (str content)})]))))
+
 
 (def file-component (om/factory File {:keyfn :file/id}))
 
@@ -122,7 +139,7 @@
                          true
                          )))
 
-(def r (om/reconciler {:state state
+(defonce r (om/reconciler {:state state
                        :parser p
                        :remotes [:gist/list]
                        :send (fn [{:keys [:gist/list]} cb]
@@ -132,12 +149,11 @@
 
 (defmethod read :gist/list
   [{:keys [state] :as env} k _]
-  {:value (get (om/db->tree (om/get-query Gists)
-                            @state
-                            @state
-                            )
-               k
-               [])
+  {:value (or (om/db->tree (om/get-query Gist)
+                        (:gist/list @state)
+                        @state
+                        )
+              [])
    :gist/list true})
 
 (defcard-om-next gists-card
@@ -157,7 +173,6 @@
 
 (defcard results
   eval-results)
-
 
 
 

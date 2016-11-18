@@ -304,11 +304,14 @@
   "Create a parinfer editor."
   ([element-id key-] (create-editor-el! element-id key- {}))
   ([element key- opts]
-   (when-not (get @e-state key-)
+   (print "blablabll")
+   (print element key- opts)
+   (if-not (get @e-state key-)
      (let [cm (js/CodeMirror.fromTextArea element (clj->js (merge editor-opts opts)))
            wrapper (.getWrapperElement cm)
            ]
 
        (parinferize! cm key- :indent-mode "")
 
-       cm))))
+       cm)
+     (get @e-state key-))))
