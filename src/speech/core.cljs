@@ -26,6 +26,13 @@
 
 (enable-console-print!)
 
+(declare init)
+(defonce refresh-key (atom 0))
+
+(defn fig-reload []
+  (swap! refresh-key inc)
+  (init))
+
 (defonce state
   (atom {}))
 
@@ -35,12 +42,12 @@
     (apply merge-with deep-merge xs)
     (last xs)))
 
-
 (defn prr [& args] (js/console.log args))
 
 (defn ppr [& args] (cljs.pprint/pprint args))
 
 (def base-url "http://localhost:3000/api/oauth2")
+
 
 (defui File
   static om/Ident
@@ -50,23 +57,26 @@
   (query [this]
          [:file/content :file/id])
   Object
-  (componentDidUpdate [this prev-props prev-state]
-                      (let [{:keys [:file/id :file/content]} (om/props this)
-                            editor (:file/editor (om/get-state this))
-                            existing-textarea (dom/node this id)
-                            prev-content (:file/content prev-props)]
-                        (when (and (not editor) content)
-                          (om/set-state!
-                           this
-                           {:file/editor (create-editor-el!
-                                                      existing-textarea
-                                                      id
-                                                      {:text (str content)})}))))
+  (componentDidUpdate [this _ _]
+                      (let [content (:file/content (om/props this))
+                            editor (:file/editor (om/get-state this))]
+                        (.setValue editor (str content))))
+  (componentDidMount [this]
+                     (let [{:keys [:file/content :file/id]} (om/props this)
+                           cm (js/CodeMirror.fromTextArea
+                               (dom/node this id)
+                               (clj->js speech.editor/editor-opts))
+                           wrapper (.getWrapperElement cm)
+                           ]
+                       (speech.editor/parinferize! cm id :indent-mode "")
+                       (om/set-state! this {:file/editor cm})))
+  (componentWillUnmount [this]
+                       (let [{:keys [:file/editor]} (om/get-state this)]
+                         (.toTextArea editor)))
   (render [this]
           (let [{:keys [:file/content :file/id]} (om/props this)]
-            (dom/div #js {}
-                     [(dom/textarea #js {:key id :ref id
-                                         :value (str content)})]))))
+            (dom/textarea #js {:ref id
+                               :value (str content)}))))
 
 
 (def file-component (om/factory File {:keyfn :file/id}))
@@ -77,14 +87,15 @@
          [:gist/id id])
   static om/IQuery
   (query [this]
-         [:gist/id :gist/description {:gist/files (om/get-query File)}])
+         [:gist/id {:file/list (om/get-query File)} :gist/description])
   Object
   (render [this]
-          (let [{:keys [gist/description
-                        gist/files]} (om/props this)]
-            (dom/div nil [(dom/p #js {:key "descr"} description)
-                          (for [file files]
-                            (file-component file))]))))
+          (let [{:keys [file/list gist/description]} (om/props this)]
+            (dom/div nil
+                     (dom/div #js {:key "descr"}
+                              description)
+                     (for [file list]
+                       (file-component file))))))
 
 (def gist-component (om/factory Gist {:keyfn :gist/id}))
 
@@ -100,7 +111,8 @@
 
 (defmulti read om/dispatch)
 
-(def p (om/parser {:read read}))
+(defonce p (om/parser {:read read}))
+
 
 (defn grab-and-merge-file [merge-cb state gist-id]
   (go (take! (http/get (str base-url "/gist")
@@ -117,6 +129,19 @@
                             {:file/id (:file/id @state)}
                             merged)))))))
 
+(defn rename-gist-keys [gist]
+  (-> gist
+      (clojure.set/rename-keys
+       {:id :gist/id :files :file/list
+        :description :gist/description})
+      (update :file/list
+              (fn [files]
+                (into []
+                      (map (fn [[file-id file]]
+                             {:file/id (str (:id gist)
+                                            file-id)})
+                           files))))))
+
 (defn extract-gists [query state merge-cb {:keys [body]}]
   (merge-cb (om/tree->db (om/get-query Gists)
                          {:gist/list
@@ -124,28 +149,19 @@
                            []
                            (doall (map (fn [gist]
                                          (grab-and-merge-file merge-cb state (:id gist))
-                                         (-> gist
-                                             (clojure.set/rename-keys
-                                              {:id :gist/id :files :gist/files
-                                               :description :gist/description})
-                                             (update :gist/files
-                                                     (fn [files]
-                                                       (into []
-                                                             (map (fn [[file-id file]]
-                                                                    {:file/id (str (:id gist)
-                                                                                   file-id)})
-                                                                  files))))))
+                                         (rename-gist-keys gist))
                                        body)))}
                          true
                          )))
 
-(defonce r (om/reconciler {:state state
-                       :parser p
-                       :remotes [:gist/list]
-                       :send (fn [{:keys [:gist/list]} cb]
-                               (go (take! (http/get (str base-url "/gist/list"))
-                                          (partial extract-gists
-                                                   list state cb))))}))
+(defonce r (om/reconciler
+            {:state state
+             :parser p
+             :remotes [:gist/list]
+             :send (fn [{:keys [:gist/list]} cb]
+                     (go (take! (http/get (str base-url "/gist/list"))
+                                (partial extract-gists
+                                         list state cb))))}))
 
 (defmethod read :gist/list
   [{:keys [state] :as env} k _]
@@ -155,6 +171,10 @@
                         )
               [])
    :gist/list true})
+
+(defmethod read :default
+  [{:keys [state] :as env} k _]
+  {:value (get @state k)})
 
 (defcard-om-next gists-card
   Gists
@@ -174,6 +194,13 @@
 (defcard results
   eval-results)
 
+(defonce root (atom nil))
+
+(defn init []
+  #_(swap! state assoc :ui/react-key @refresh-key)
+  #_(if (nil? @root)
+    (reset! root Gists)
+    (.forceUpdate (om/app-root r))))
 
 
 

@@ -47,12 +47,8 @@
   :cljsbuild {
               :builds [{:id "devcards"
                         :source-paths ["src"]
-                        :figwheel { :devcards true  ;; <- note this
-                                   ;; :open-urls will pop open your application
-                                   ;; in the default browser once Figwheel has
-                                   ;; started and complied your application.
-                                   ;; Comment this out once it no longer serves you.
-                                   :open-urls ["http://localhost:3449/cards.html"]}
+                        :figwheel {:on-jsload "speech.core/fig-reload"
+                                   :devcards true}
                         :compiler { :main       "speech.core"
                                     :asset-path "js/compiled/devcards_out"
                                     :output-to  "resources/public/js/compiled/speech_devcards.js"
