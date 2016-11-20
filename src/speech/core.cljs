@@ -118,20 +118,37 @@
 
 (defmulti mutate om/dispatch)
 
+(defn get-gist-files [gist-id]
+  (->>
+   (for [{:keys [:file/id]}
+         (->> (om/db->tree (om/get-query Gist)
+                           (:gist/list @state)
+                           @state
+                           )
+              (filter (fn [gist] (= gist-id (:gist/id gist))))
+              first
+              :file/list)]
+     [{(clojure.string/replace id gist-id "")
+       {:content (.getValue (-> (get @speech.editor/e-state id)
+                                 :cm
+                                 )
+                             )}}])
+   first
+   (into {})))
+
 (defmethod mutate 'app/save-gist
   [_ _ {:keys [id]}]
-  {:action (fn [] (js/console.log
-                   (for [{:keys [:file/id]}
-                               (:file/list (first (filter (fn [gist] (= id (:gist/id gist)))
-                                                          (om/db->tree (om/get-query Gist)
-                                                                       (:gist/list @state)
-                                                                       @state
-                                                                       ))))]
-                                    (.getValue (-> (get @speech.editor/e-state id)
-                                                   :cm
-                                                   )))
-                                  ))})
-
+  {:action (fn [] (go (take! (http/post (str base-url "/gist")
+                                         {:transit-params
+                                          {:gist-id id
+                                           :files (get-gist-files id)}})
+                               print)))})
+(get-gist-files
+ (-> @state
+     :gist/id
+     first
+     first
+     ))
 
 (defonce p (om/parser {:read read :mutate mutate}))
 
@@ -143,8 +160,8 @@
                (let [merged
                      (into {}
                            (map (fn [[file-id {:keys [content]}]]
-                                   [:file/id {(str gist-id file-id)
-                                              {:file/content content}}])
+                                  [:file/id {(str gist-id (name file-id))
+                                             {:file/content content}}])
                                 (:files body)))]
                  (merge-cb (deep-merge
                             {:file/id (:file/id @state)}
@@ -160,7 +177,7 @@
                 (into []
                       (map (fn [[file-id file]]
                              {:file/id (str (:id gist)
-                                            file-id)})
+                                            (name file-id))})
                            files))))))
 
 (defn extract-gists [query state merge-cb {:keys [body]}]

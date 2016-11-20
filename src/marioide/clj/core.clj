@@ -12,7 +12,8 @@
             [environ.core :refer [env]]
             [tentacles.gists :as gists]
             [tentacles.users :as users]
-            [manifold.deferred :as d]))
+            [manifold.deferred :as d]
+            [clojure.data.json :as json]))
 
 (def produced-types
   #{"application/transit+json"
@@ -34,97 +35,117 @@
   (:at (first (filter (comp  (partial = id) :id) (:users @state)))))
 
 (defn build-routes []
-  (try ["" [["/api"
-             [
-              ["" (yada/redirect ::index)]
-              ["/" (yada/redirect ::index)]
-              ["/index.html" (-> (yada/resource
-                                  {:methods {:get {:response (fn [ctx] "/cards.html")
-                                                   :produces {:media-type "text/plain"}}}})
-                                 (assoc :id ::index))]
-              ["/oauth2" (let [github-client-id (env :gh-client-id)
-                               github-client-secret (env :gh-client-secret)
-                               secret (hash/sha256 "bla")]
-                           [["/login"
-                             (yada/resource
-                              {:produces "text/plain"
-                               :response (fn [ctx]
-                                           (if-let [uri (:href (yada/uri-for ctx ::initiate-github))]
-                                             (assoc (:response ctx)
-                                                    :status 302
-                                                    :headers {"location" uri})
-                                             (println "no uri")))})]
-                            ["/initiate-github" (oauth/oauth2-initiate-resource
-                                                 {:id ::initiate-github
-                                                  :type :github
-                                                  :client-id github-client-id
-                                                  :redirect-uri ::github-oauth-callback
-                                                  :secret secret
-                                                  :target-uri ::cards
-                                                  :authorization-uri "https://github.com/login/oauth/authorize"
-                                                  :scope (str/join "," ["user:email" "gist"])})]
+  [""
+   [["/api"
+     [
+      ["" (yada/redirect ::index)]
+      ["/" (yada/redirect ::index)]
+      ["/index.html" (-> (yada/resource
+                          {:methods {:get {:response (fn [ctx] "/cards.html")
+                                           :produces {:media-type "text/plain"}}}})
+                         (assoc :id ::index))]
+      ["/oauth2" (let [github-client-id (env :gh-client-id)
+                       github-client-secret (env :gh-client-secret)
+                       secret (hash/sha256 "bla")]
+                   [["/login"
+                     (yada/resource
+                      {:produces "text/plain"
+                       :response (fn [ctx]
+                                   (if-let [uri (:href (yada/uri-for ctx ::initiate-github))]
+                                     (assoc (:response ctx)
+                                            :status 302
+                                            :headers {"location" uri})
+                                     (println "no uri")))})]
+                    ["/initiate-github" (oauth/oauth2-initiate-resource
+                                         {:id ::initiate-github
+                                          :type :github
+                                          :client-id github-client-id
+                                          :redirect-uri ::github-oauth-callback
+                                          :secret secret
+                                          :target-uri ::cards
+                                          :authorization-uri "https://github.com/login/oauth/authorize"
+                                          :scope (str/join "," ["user:email" "gist"])})]
 
-                            ["/callback-github"
-                             (oauth/oauth2-callback-resource-github
-                              {:id ::github-oauth-callback
-                               :client-id github-client-id
-                               :client-secret github-client-secret
-                               :user-agent "yada"
-                               :secret secret
-                               :access-token-url "https://github.com/login/oauth/access_token"
-                               :access-token-handler (fn [at]
-                                                       (d/let-flow [email (->>
-                                                                           (users/emails {:oauth-token at})
-                                                                           (filter :verified)
-                                                                           (map :email)
-                                                                           first)
-                                                                    name (:name (users/me {:oauth-token at}))]
-                                                         (e/swap! state update :users (fn [users]
-                                                                                        (conj users {:id email
-                                                                                                     :name name
-                                                                                                     :at at})))
-                                                         {:id email
-                                                          :name name}))})]
-                            ["/gist"
-                             [["" (-> (yada/resource
-                                       {:access-control
-                                        {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
-                                        :methods {:get {:response
-                                                        (fn [ctx]
+                    ["/callback-github"
+                     (oauth/oauth2-callback-resource-github
+                      {:id ::github-oauth-callback
+                       :client-id github-client-id
+                       :client-secret github-client-secret
+                       :user-agent "yada"
+                       :secret secret
+                       :access-token-url "https://github.com/login/oauth/access_token"
+                       :access-token-handler (fn [at]
+                                               (d/let-flow [email (->>
+                                                                   (users/emails {:oauth-token at})
+                                                                   (filter :verified)
+                                                                   (map :email)
+                                                                   first)
+                                                            name (:name (users/me {:oauth-token at}))]
+                                                           (e/swap! state update :users (fn [users]
+                                                                                          (conj users {:id email
+                                                                                                       :name name
+                                                                                                       :at at})))
+                                                           {:id email
+                                                            :name name}))})]
+                    ["/gist"
+                     [[""
+                       (-> (yada/resource
+                            {:access-control
+                             {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
+                             :methods {:get {:response
+                                             (fn [ctx]
+                                               (if-let [user (-> ctx :authentication (get "default"))]
+                                                 (let [gist-id (get-in ctx [:parameters :query "gist-id"])]
+                                                   (gists/specific-gist gist-id
+                                                                        {:oauth-token (get-token user)})
+                                                   )
+                                                 "unauthed"))
+                                             :produces {:media-type produced-types}
+                                             :consumes {:media-type consumed-types}}
+                                       :post
+                                       {:response
+                                        (fn [ctx]
+                                          (if-let [user (-> ctx :authentication (get "default"))]
+                                            (let [{:keys [gist-id files]} (:body ctx)]
+                                              (client/patch (str "https://api.github.com/gists/" gist-id)
+                                                            {:body
+                                                             (json/write-str {:files files})
+                                                             :headers
+                                                             {"Authorization" (str "token " (get-token user))}}))
+                                            "unauthed"))
+                                        :produces {:media-type produced-types}
+                                        :consumes {:media-type consumed-types}}}})
+                           (assoc :id ::index))]
+                      ["/new"
+                       (yada/resource
+                            {:access-control
+                             {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
+                             :methods {:post {:response (fn [ctx]
                                                           (if-let [user (-> ctx :authentication (get "default"))]
-                                                            (let [gist-id (get-in ctx [:parameters :query "gist-id"])]
-                                                              (gists/specific-gist gist-id
-                                                                                   {:oauth-token (get-token user)})
-                                                              )
+                                                            (gists/create-gist {:new-file "(+ 1 1)"}
+                                                                               {:description "new gist"
+                                                                                :public false
+                                                                                :oauth-token (get-token user)})
                                                             "unauthed"))
-                                                        :produces {:media-type produced-types}
-                                                        :consumes {:media-type consumed-types}}
-                                                  :post {:response (fn [ctx]
-                                                                     (if-let [user (-> ctx :authentication (get "default"))]
-                                                                       (gists/create-gist {:oauth-token (get-token user)})
-                                                                       "unauthed"))
-                                                         :produces {:media-type produced-types}
-                                                         :consumes {:media-type consumed-types}}}})
-                                      (assoc :id ::index))]
-                              ["/list"
-                               (yada/resource
-                                {:id ::welcome
+                                              :produces {:media-type produced-types}
+                                              :consumes {:media-type consumed-types}}}})]
+                      ["/list"
+                       (yada/resource
+                        {:id ::welcome
 
-                                 :access-control
-                                 {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
+                         :access-control
+                         {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
 
-                                 :methods
-                                 {:get {:produces produced-types
-                                        :response (fn [ctx]
-                                                    (if-let [user (-> ctx :authentication (get "default"))]
-                                                      (gists/gists {:oauth-token (get-token user)})
-                                                      "unauthed"))}}})]]]])]]]
-            ["/cards.html" (-> (yada (clojure.java.io/file "resources/public/cards.html"))
-                               (assoc :id ::cards))]
-            ["/" (yada.resources.file-resource/new-directory-resource
-                  (clojure.java.io/file "resources/public") {})]]]
-       (catch Throwable e
-         (println e))))
+                         :methods
+                         {:get {:produces produced-types
+                                :response (fn [ctx]
+                                            (if-let [user (-> ctx :authentication (get "default"))]
+                                              (gists/gists {:oauth-token (get-token user)})
+                                              "unauthed"))}}})]]]])]]]
+    ["/cards.html" (-> (yada (clojure.java.io/file "resources/public/cards.html"))
+                       (assoc :id ::cards))]
+    ["/" (yada.resources.file-resource/new-directory-resource
+          (clojure.java.io/file "resources/public") {})]]])
 
 (declare svr)
 
