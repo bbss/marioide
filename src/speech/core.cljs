@@ -48,7 +48,6 @@
 
 (def base-url "http://localhost:3000/api/oauth2")
 
-
 (defui File
   static om/Ident
   (ident [this {:keys [file/id]}]
@@ -58,26 +57,25 @@
          [:file/content :file/id])
   Object
   (componentDidUpdate [this _ _]
-                      (let [content (:file/content (om/props this))
+                      (let [{:keys [file/content file/id]} (om/props this)
                             editor (:file/editor (om/get-state this))]
-                        (.setValue editor (str content))))
+                        (swap! speech.editor/e-state assoc-in [id :text] (str content))))
   (componentDidMount [this]
                      (let [{:keys [:file/content :file/id]} (om/props this)
                            cm (js/CodeMirror.fromTextArea
                                (dom/node this id)
                                (clj->js speech.editor/editor-opts))
-                           wrapper (.getWrapperElement cm)
                            ]
                        (speech.editor/parinferize! cm id :indent-mode "")
+                       (speech.editor/start-editor-sync!)
                        (om/set-state! this {:file/editor cm})))
   (componentWillUnmount [this]
-                       (let [{:keys [:file/editor]} (om/get-state this)]
+                       #_(let [{:keys [:file/editor]} (om/get-state this)]
                          (.toTextArea editor)))
   (render [this]
           (let [{:keys [:file/content :file/id]} (om/props this)]
             (dom/textarea #js {:ref id
                                :value (str content)}))))
-
 
 (def file-component (om/factory File {:keyfn :file/id}))
 
@@ -90,8 +88,11 @@
          [:gist/id {:file/list (om/get-query File)} :gist/description])
   Object
   (render [this]
-          (let [{:keys [file/list gist/description]} (om/props this)]
+          (let [{:keys [gist/id file/list gist/description]} (om/props this)
+                {:keys [save-gist]} (om/get-computed this)]
             (dom/div nil
+                     (dom/button #js {:onClick #(save-gist id)}
+                                 "Save gist to Github")
                      (dom/div #js {:key "descr"}
                               description)
                      (for [file list]
@@ -107,12 +108,32 @@
   (render [this]
           (let [{:keys [gist/list]} (om/props this)]
             (dom/div nil (for [gist list]
-                           (gist-component gist))))))
+                           (gist-component
+                            (om/computed gist
+                                         {:save-gist (fn [id]
+                                                       (om/transact! this `[(app/save-gist {:id ~id})]))})
+                                           ))))))
 
 (defmulti read om/dispatch)
 
-(defonce p (om/parser {:read read}))
+(defmulti mutate om/dispatch)
 
+(defmethod mutate 'app/save-gist
+  [_ _ {:keys [id]}]
+  {:action (fn [] (js/console.log
+                   (for [{:keys [:file/id]}
+                               (:file/list (first (filter (fn [gist] (= id (:gist/id gist)))
+                                                          (om/db->tree (om/get-query Gist)
+                                                                       (:gist/list @state)
+                                                                       @state
+                                                                       ))))]
+                                    (.getValue (-> (get @speech.editor/e-state id)
+                                                   :cm
+                                                   )))
+                                  ))})
+
+
+(defonce p (om/parser {:read read :mutate mutate}))
 
 (defn grab-and-merge-file [merge-cb state gist-id]
   (go (take! (http/get (str base-url "/gist")
@@ -179,17 +200,6 @@
 (defcard-om-next gists-card
   Gists
   r)
-
-(defcard parinfer-codemirror-card
-  (dom-node (fn [state node]
-              (if (not (:editor @e-state))
-                (let [_ (set! (.-innerHTML node) "<div></div>")
-                      textarea (.appendChild node
-                                             (js/document.createElement "textarea"))]
-                  (create-editor-el! textarea :editor)
-
-                  (start-editor-sync!))
-                node))))
 
 (defcard results
   eval-results)

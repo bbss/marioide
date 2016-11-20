@@ -199,13 +199,23 @@
 ;; Setup
 ;;----------------------------------------------------------------------
 (def key-map
-  #js {"Ctrl-Enter" (fn [cm] (eval (current-selection cm)))})
+  #js {"Ctrl-Enter" (fn [cm]
+                      (eval (current-selection cm)))})
+
+(defn add-handlers [cm]
+  (.on cm "change" on-change)
+  (.on cm "beforeChange" before-change)
+  (.on cm "cursorActivity" on-cursor-activity)
+  (.on cm "blur" (fn [] (print "blur")))
+  (.addKeyMap cm "emacs")
+  (.addKeyMap cm key-map)
+  (set! (.-save (.-commands js/CodeMirror))
+        (fn [cm] (js/console.log "saved"))))
 
 (defn parinferize!
   "Add parinfer goodness to a codemirror editor"
   ([cm key- parinfer-mode initial-value]
-   (when-not (get @e-state key-)
-     (let [initial-state (assoc empty-editor-state
+   (let [initial-state (assoc empty-editor-state
                                 :mode parinfer-mode
                                 :text initial-value)
            prev-editor-state (atom nil)]
@@ -226,15 +236,9 @@
                  (set-frame-updated! [this value] (swap! frame-updates assoc-in [key- :frame-updated?] value)))
 
        ;; handle code mirror events
-       (.on cm "change" on-change)
-       (.on cm "beforeChange" before-change)
-       (.on cm "cursorActivity" on-cursor-activity)
-       (.addKeyMap cm "emacs")
-       (.addKeyMap cm key-map)
-       (set! (.-save (.-commands js/CodeMirror))
-             (fn [cm] ))
+       (add-handlers cm)
 
-       cm))))
+       cm)))
 
 ;;----------------------------------------------------------------------
 ;; Sync changes
