@@ -206,7 +206,6 @@
   (.on cm "change" on-change)
   (.on cm "beforeChange" before-change)
   (.on cm "cursorActivity" on-cursor-activity)
-  (.on cm "blur" (fn [] (print "blur")))
   (.addKeyMap cm "emacs")
   (.addKeyMap cm key-map)
   (set! (.-save (.-commands js/CodeMirror))

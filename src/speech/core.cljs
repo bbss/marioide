@@ -143,12 +143,6 @@
                                           {:gist-id id
                                            :files (get-gist-files id)}})
                                print)))})
-(get-gist-files
- (-> @state
-     :gist/id
-     first
-     first
-     ))
 
 (defonce p (om/parser {:read read :mutate mutate}))
 
@@ -158,11 +152,11 @@
                         {"gist-id" gist-id}})
              (fn [{:keys [body]}]
                (let [merged
-                     (into {}
-                           (map (fn [[file-id {:keys [content]}]]
-                                  [:file/id {(str gist-id (name file-id))
-                                             {:file/content content}}])
-                                (:files body)))]
+                     (reduce (fn [acc [file-id {:keys [content]}]]
+                               (deep-merge acc {:file/id {(str gist-id (name file-id))
+                                                      {:file/content content}}}))
+                             {}
+                             (:files body))]
                  (merge-cb (deep-merge
                             {:file/id (:file/id @state)}
                             merged)))))))
@@ -229,6 +223,7 @@
     (reset! root Gists)
     (.forceUpdate (om/app-root r))))
 
+;;fix parsing of multiple files in gist
 
 
 
