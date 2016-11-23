@@ -108,11 +108,12 @@
             (ui/list-item {:primary-text (if (not (empty? description))
                                            description
                                            id)
-                           :on-touch-tap #(expand-gist id)
+                           :on-nested-list-toggle #(expand-gist id)
                            :primary-toggles-nested-list true
                            :nested-items [(for [file list]
                                                  (file-component file))
                                           (ui/raised-button {:label "Save gist to Github"
+                                                             :key "button"
                                                              :on-touch-tap #(save-gist id)})]}))))
 
 (def gist-component (om/factory Gist {:keyfn :gist/id}))
@@ -137,7 +138,7 @@
                                                               (om/transact! this `[(app/save-gist {:id ~id})]))
                                                             :expand-gist
                                                             (fn [id]
-                                                              (om/transact! this `[(app/expand-gist {:id ~id})]))}))))))))))
+                                                              (om/transact! this `[(app/expand-gist {:id ~id}) [:gist/list]]))}))))))))))
 
 (defmulti read om/dispatch)
 
@@ -168,6 +169,7 @@
                                           {:gist-id id
                                            :files (get-gist-files id)}})
                                print)))})
+
 (defmethod mutate 'app/expand-gist
   [{:keys [state]} _ {:keys [id]}]
   {:action (fn []
@@ -176,21 +178,22 @@
 (defonce p (om/parser {:read read :mutate mutate}))
 
 (defn grab-and-merge-file [merge-cb state gist-id]
-  (go (take! (http/get (str base-url "/gist")
-                       {:query-params
-                        {"gist-id" gist-id}})
-             (fn [{:keys [body]}]
-               (let [merged
-                     (reduce (fn [acc [file-id {:keys [content type language] :as doge}]]
-                               (deep-merge acc {:file/id {(str gist-id (name file-id))
-                                                          {:file/content content
-                                                           :file/type type
-                                                           :file/language language}}}))
-                             {}
-                             (:files body))]
-                 (merge-cb (deep-merge
-                            {:file/id (:file/id @state)}
-                            merged)))))))
+  (when-let [expanded (get-in @state [:gist/id gist-id :gist/expanded])]
+    (go (take! (http/get (str base-url "/gist")
+                         {:query-params
+                          {"gist-id" gist-id}})
+               (fn [{:keys [body]}]
+                 (let [merged
+                       (reduce (fn [acc [file-id {:keys [content type language] :as doge}]]
+                                 (deep-merge acc {:file/id {(str gist-id (name file-id))
+                                                            {:file/content content
+                                                             :file/type type
+                                                             :file/language language}}}))
+                               {}
+                               (:files body))]
+                   (merge-cb (deep-merge
+                              {:file/id (:file/id @state)}
+                              merged))))))))
 
 (defn rename-gist-keys [gist]
   (-> gist
