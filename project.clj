@@ -20,6 +20,7 @@
                  [cljsjs/codemirror "5.19.0-0"]
                  [replumb "0.2.4"]
                  [parinfer-cljs "1.5.1-0"]
+                 [cljs-react-material-ui "0.2.30"]
 
                  [cljsjs/react "15.3.1-0"]
                  [cljsjs/react-dom "15.3.1-0"]

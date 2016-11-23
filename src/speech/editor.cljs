@@ -227,15 +227,16 @@
                    (assoc :cm cm)))
 
        ;; Extend the code mirror object with some utility methods.
-       (specify! cm
-                 IEditor
-                 (get-prev-state [this] prev-editor-state)
-                 (cm-key [this] key-)
-                 (frame-updated? [this] (get-in @frame-updates [key- :frame-updated?]))
-                 (set-frame-updated! [this value] (swap! frame-updates assoc-in [key- :frame-updated?] value)))
-
        ;; handle code mirror events
-       (add-handlers cm)
+       (when (not (= parinfer-mode :none))
+         (let []
+           (specify! cm
+             IEditor
+             (get-prev-state [this] prev-editor-state)
+             (cm-key [this] key-)
+             (frame-updated? [this] (get-in @frame-updates [key- :frame-updated?]))
+             (set-frame-updated! [this value] (swap! frame-updates assoc-in [key- :frame-updated?] value)))
+           (add-handlers cm)))
 
        cm)))
 

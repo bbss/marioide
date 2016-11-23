@@ -1,5 +1,8 @@
 (ns speech.core
   (:require
+   [cljsjs.material-ui]
+   [cljs-react-material-ui.core :as ui]
+   [cljs-react-material-ui.icons :as ic]
    [speech.fixtures.definition :refer [def-recognizer]]
    [speech.editor :refer [e-state create-editor-el! start-editor-sync!]]
    [speech.eval :refer [ConsoleElement console-element eval-results]]
@@ -48,30 +51,40 @@
 
 (def base-url "http://localhost:3000/api/oauth2")
 
+(defn clojure-replize [cm id content]
+  (speech.editor/parinferize! cm id :indent-mode "")
+  (speech.editor/start-editor-sync!)
+  (swap! speech.editor/e-state assoc-in [id :text] (str content)))
+
+(defn replize [cm id content]
+  (speech.editor/parinferize! cm id :none "")
+  (speech.editor/start-editor-sync!)
+  (swap! speech.editor/e-state assoc-in [id :text] (str content)))
+
 (defui File
   static om/Ident
   (ident [this {:keys [file/id]}]
          [:file/id id])
   static om/IQuery
   (query [this]
-         [:file/content :file/id])
+         [:file/content :file/type :file/language :file/id])
   Object
-  (componentDidUpdate [this _ _]
-                      (let [{:keys [file/content file/id]} (om/props this)
-                            editor (:file/editor (om/get-state this))]
-                        (swap! speech.editor/e-state assoc-in [id :text] (str content))))
+  (componentDidUpdate [this prev-props _]
+                      (let [{:keys [file/content file/type file/language file/id]}
+                            (om/props this)
+                            cm (:file/editor (om/get-state this))]
+                        (when content
+                          (case language
+                            "Clojure" (clojure-replize cm id (str content))
+                            (replize cm id (str content))))
+                        ))
   (componentDidMount [this]
-                     (let [{:keys [:file/content :file/id]} (om/props this)
+                     (let [{:keys [:file/content :file/id :file/type :file/language]} (om/props this)
                            cm (js/CodeMirror.fromTextArea
                                (dom/node this id)
                                (clj->js speech.editor/editor-opts))
                            ]
-                       (speech.editor/parinferize! cm id :indent-mode "")
-                       (speech.editor/start-editor-sync!)
                        (om/set-state! this {:file/editor cm})))
-  (componentWillUnmount [this]
-                       #_(let [{:keys [:file/editor]} (om/get-state this)]
-                         (.toTextArea editor)))
   (render [this]
           (let [{:keys [:file/content :file/id]} (om/props this)]
             (dom/textarea #js {:ref id
@@ -91,12 +104,13 @@
           (let [{:keys [gist/id file/list gist/description]} (om/props this)
                 {:keys [save-gist]} (om/get-computed this)]
             (dom/div nil
-                     (dom/button #js {:onClick #(save-gist id)}
-                                 "Save gist to Github")
                      (dom/div #js {:key "descr"}
                               description)
                      (for [file list]
-                       (file-component file))))))
+                       (file-component file))
+                     (ui/raised-button {:label "Save gist to Github"
+                                        :on-touch-tap #(save-gist id)}
+                                       )))))
 
 (def gist-component (om/factory Gist {:keyfn :gist/id}))
 
@@ -107,12 +121,13 @@
   Object
   (render [this]
           (let [{:keys [gist/list]} (om/props this)]
-            (dom/div nil (for [gist list]
-                           (gist-component
-                            (om/computed gist
-                                         {:save-gist (fn [id]
-                                                       (om/transact! this `[(app/save-gist {:id ~id})]))})
-                                           ))))))
+            (ui/mui-theme-provider
+             {:mui-theme (ui/get-mui-theme)}
+             (ui/paper nil (for [gist list]
+                            (gist-component
+                             (om/computed gist
+                                          {:save-gist (fn [id]
+                                                        (om/transact! this `[(app/save-gist {:id ~id})]))}))))))))
 
 (defmulti read om/dispatch)
 
@@ -152,9 +167,11 @@
                         {"gist-id" gist-id}})
              (fn [{:keys [body]}]
                (let [merged
-                     (reduce (fn [acc [file-id {:keys [content]}]]
+                     (reduce (fn [acc [file-id {:keys [content type language] :as doge}]]
                                (deep-merge acc {:file/id {(str gist-id (name file-id))
-                                                      {:file/content content}}}))
+                                                          {:file/content content
+                                                           :file/type type
+                                                           :file/language language}}}))
                              {}
                              (:files body))]
                  (merge-cb (deep-merge
