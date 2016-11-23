@@ -76,8 +76,7 @@
                         (when content
                           (case language
                             "Clojure" (clojure-replize cm id (str content))
-                            (replize cm id (str content))))
-                        ))
+                            (replize cm id (str content))))))
   (componentDidMount [this]
                      (let [{:keys [:file/content :file/id :file/type :file/language]} (om/props this)
                            cm (js/CodeMirror.fromTextArea
@@ -92,25 +91,29 @@
 
 (def file-component (om/factory File {:keyfn :file/id}))
 
+;;add button to gists for new gist
+;;add-gist form that is props
+;;add button to gist for new file
 (defui Gist
   static om/Ident
   (ident [this {:keys [gist/id]}]
          [:gist/id id])
   static om/IQuery
   (query [this]
-         [:gist/id {:file/list (om/get-query File)} :gist/description])
+         [:gist/id {:file/list (om/get-query File)} :gist/description :gist/expanded])
   Object
   (render [this]
-          (let [{:keys [gist/id file/list gist/description]} (om/props this)
-                {:keys [save-gist]} (om/get-computed this)]
-            (dom/div nil
-                     (dom/div #js {:key "descr"}
-                              description)
-                     (for [file list]
-                       (file-component file))
-                     (ui/raised-button {:label "Save gist to Github"
-                                        :on-touch-tap #(save-gist id)}
-                                       )))))
+          (let [{:keys [gist/id file/list gist/description gist/expanded]} (om/props this)
+                {:keys [save-gist expand-gist]} (om/get-computed this)]
+            (ui/list-item {:primary-text (if (not (empty? description))
+                                           description
+                                           id)
+                           :on-touch-tap #(expand-gist id)
+                           :primary-toggles-nested-list true
+                           :nested-items [(for [file list]
+                                                 (file-component file))
+                                          (ui/raised-button {:label "Save gist to Github"
+                                                             :on-touch-tap #(save-gist id)})]}))))
 
 (def gist-component (om/factory Gist {:keyfn :gist/id}))
 
@@ -123,11 +126,18 @@
           (let [{:keys [gist/list]} (om/props this)]
             (ui/mui-theme-provider
              {:mui-theme (ui/get-mui-theme)}
-             (ui/paper nil (for [gist list]
-                            (gist-component
-                             (om/computed gist
-                                          {:save-gist (fn [id]
-                                                        (om/transact! this `[(app/save-gist {:id ~id})]))}))))))))
+             (ui/paper {:z-depth 1}
+                       (ui/list nil
+                                (interpose (ui/divider {:key (str (Math.random))})
+                                           (for [gist list]
+                                             (gist-component
+                                              (om/computed gist
+                                                           {:save-gist
+                                                            (fn [id]
+                                                              (om/transact! this `[(app/save-gist {:id ~id})]))
+                                                            :expand-gist
+                                                            (fn [id]
+                                                              (om/transact! this `[(app/expand-gist {:id ~id})]))}))))))))))
 
 (defmulti read om/dispatch)
 
@@ -158,6 +168,10 @@
                                           {:gist-id id
                                            :files (get-gist-files id)}})
                                print)))})
+(defmethod mutate 'app/expand-gist
+  [{:keys [state]} _ {:keys [id]}]
+  {:action (fn []
+             (swap! state update-in [:gist/id id :gist/expanded] not))})
 
 (defonce p (om/parser {:read read :mutate mutate}))
 
