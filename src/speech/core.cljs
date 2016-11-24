@@ -67,7 +67,7 @@
          [:file/id id])
   static om/IQuery
   (query [this]
-         [:file/content :file/type :file/language :file/id])
+         [:file/content :file/type :file/language :file/name :file/id])
   Object
   (componentDidUpdate [this prev-props _]
                       (let [{:keys [file/content file/type file/language file/id]}
@@ -78,22 +78,20 @@
                             "Clojure" (clojure-replize cm id (str content))
                             (replize cm id (str content))))))
   (componentDidMount [this]
-                     (let [{:keys [:file/content :file/id :file/type :file/language]} (om/props this)
+                     (let [{:keys [:file/content :file/name :file/id :file/type :file/language]} (om/props this)
                            cm (js/CodeMirror.fromTextArea
                                (dom/node this id)
                                (clj->js speech.editor/editor-opts))
                            ]
                        (om/set-state! this {:file/editor cm})))
   (render [this]
-          (let [{:keys [:file/content :file/id]} (om/props this)]
-            (dom/textarea #js {:ref id
-                               :value (str content)}))))
+          (let [{:keys [:file/content :file/name :file/id]} (om/props this)]
+            (ui/card (ui/subheader name)
+                     (dom/textarea #js {:ref id
+                                        :value (str content)})))))
 
 (def file-component (om/factory File {:keyfn :file/id}))
 
-;;add button to gists for new gist
-;;add-gist form that is props
-;;add button to gist for new file
 (defui Gist
   static om/Ident
   (ident [this {:keys [gist/id]}]
@@ -104,17 +102,23 @@
   Object
   (render [this]
           (let [{:keys [gist/id file/list gist/description gist/expanded]} (om/props this)
-                {:keys [save-gist expand-gist]} (om/get-computed this)]
-            (ui/list-item {:primary-text (if (not (empty? description))
+                {:keys [save-gist expand-gist add-file]} (om/get-computed this)]
+            (ui/list-item {:open expanded
+                           :primary-text (if (not (empty? description))
                                            description
                                            id)
                            :on-nested-list-toggle #(expand-gist id)
                            :primary-toggles-nested-list true
                            :nested-items [(for [file list]
-                                                 (file-component file))
-                                          (ui/raised-button {:label "Save gist to Github"
-                                                             :key "button"
-                                                             :on-touch-tap #(save-gist id)})]}))))
+                                            (file-component file))
+                                          (ui/flat-button {:label "Save gist to Github"
+                                                           :key "button"
+                                                           :on-touch-tap #(save-gist id)})
+                                          (ui/flat-button {:label "Add new file"
+                                                           :key "add file"
+                                                           :style {:float "right"}
+                                                           :icon (ic/content-add-circle)
+                                                           :on-touch-tap #(add-file id)})]}))))
 
 (def gist-component (om/factory Gist {:keyfn :gist/id}))
 
@@ -127,40 +131,49 @@
           (let [{:keys [gist/list]} (om/props this)]
             (ui/mui-theme-provider
              {:mui-theme (ui/get-mui-theme)}
-             (ui/paper {:z-depth 1}
-                       (ui/list nil
-                                (interpose (ui/divider {:key (str (Math.random))})
-                                           (for [gist list]
+             (ui/card (ui/list nil
+                                (for [gist list]
                                              (gist-component
                                               (om/computed gist
-                                                           {:save-gist
+                                                           {:add-file
+                                                            (fn [id]
+                                                              (om/transact! this `[(app/add-file {:id ~id}) [:gist/list]]))
+                                                            :save-gist
                                                             (fn [id]
                                                               (om/transact! this `[(app/save-gist {:id ~id})]))
                                                             :expand-gist
                                                             (fn [id]
-                                                              (om/transact! this `[(app/expand-gist {:id ~id}) [:gist/list]]))}))))))))))
+                                                              (om/transact! this `[(app/expand-gist {:id ~id}) [:gist/list]]))}))))
+                      (ui/card-actions (ui/floating-action-button {:label "Add new Gist"
+                                                                   :mini true
+                                                                   :on-touch-tap #(om/transact! this '[(app/new-gist) [:gist/list]])
+                                                                   }
+                                                                  (ic/content-add))))))))
 
 (defmulti read om/dispatch)
 
 (defmulti mutate om/dispatch)
 
 (defn get-gist-files [gist-id]
-  (->>
-   (for [{:keys [:file/id]}
-         (->> (om/db->tree (om/get-query Gist)
-                           (:gist/list @state)
-                           @state
-                           )
-              (filter (fn [gist] (= gist-id (:gist/id gist))))
-              first
-              :file/list)]
-     [{(clojure.string/replace id gist-id "")
-       {:content (.getValue (-> (get @speech.editor/e-state id)
-                                 :cm
-                                 )
-                             )}}])
-   first
-   (into {})))
+  (apply
+   merge
+   (flatten
+    (for [{:keys [:file/id]}
+          (->> (om/db->tree (om/get-query Gist)
+                            (:gist/list @state)
+                            @state
+                            )
+               (filter (fn [gist] (= gist-id (:gist/id gist))))
+               first
+               :file/list)]
+      [{(clojure.string/replace id gist-id "")
+        (let [file (get-in @state [:file/id id])]
+          {:content (if-let [cm (get @speech.editor/e-state id)]
+                      (.getValue (:cm cm))
+                      (:file/content file)
+                      )
+           :filename (:file/name file)
+           :language (:file/language file)})}]))))
 
 (defmethod mutate 'app/save-gist
   [_ _ {:keys [id]}]
@@ -175,6 +188,31 @@
   {:action (fn []
              (swap! state update-in [:gist/id id :gist/expanded] not))})
 
+(defmethod mutate 'app/new-gist
+  [{:keys [state]} _ _]
+  {:action (fn []
+             (go (take! (http/post (str base-url "/gist/new"))
+                        print)))})
+
+(defmethod mutate 'app/add-file
+  [{:keys [state]} _ {:keys [id]}]
+  {:action (fn []
+             (swap! state
+                    (fn [st]
+                      (let [new-file-id (->> (get-in @state [:gist/id id :file/list])
+                                             (map second)
+                                             (reduce max)
+                                             inc)]
+                        (-> st
+                            (update-in [:gist/id id :file/list]
+                                       (fn [files]
+                                         (conj files [:file/id new-file-id])))
+                            (assoc-in [:file/id new-file-id]
+                                      {:file/id new-file-id
+                                       :file/type "text/plain"
+                                       :file/language "Clojure"
+                                       :file/content ";;start coding!"
+                                       :file/name "rename-me.clj"}))))))})
 (defonce p (om/parser {:read read :mutate mutate}))
 
 (defn grab-and-merge-file [merge-cb state gist-id]
@@ -184,11 +222,12 @@
                           {"gist-id" gist-id}})
                (fn [{:keys [body]}]
                  (let [merged
-                       (reduce (fn [acc [file-id {:keys [content type language] :as doge}]]
+                       (reduce (fn [acc [file-id {:keys [content type language filename]}]]
                                  (deep-merge acc {:file/id {(str gist-id (name file-id))
                                                             {:file/content content
                                                              :file/type type
-                                                             :file/language language}}}))
+                                                             :file/language language
+                                                             :file/name filename}}}))
                                {}
                                (:files body))]
                    (merge-cb (deep-merge
@@ -209,16 +248,17 @@
                            files))))))
 
 (defn extract-gists [query state merge-cb {:keys [body]}]
-  (merge-cb (om/tree->db (om/get-query Gists)
-                         {:gist/list
-                          (into
-                           []
-                           (doall (map (fn [gist]
-                                         (grab-and-merge-file merge-cb state (:id gist))
-                                         (rename-gist-keys gist))
-                                       body)))}
-                         true
-                         )))
+  (merge-cb (deep-merge (om/tree->db (om/get-query Gists)
+                                     {:gist/list
+                                      (into
+                                       []
+                                       (doall (map (fn [gist]
+                                                     (grab-and-merge-file merge-cb state (:id gist))
+                                                     (rename-gist-keys gist))
+                                                   body)))}
+                                     true
+                                     )
+                        @state)))
 
 (defonce r (om/reconciler
             {:state state
