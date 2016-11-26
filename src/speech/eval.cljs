@@ -21,9 +21,14 @@
   [console result]
   (let [write-fn (if (replumb/success? result)
                    (juxt console.log
-                         (fn [res] (swap! eval-results assoc :success res)))
+                         (fn [res] (swap! eval-results assoc-in [:results (js/performance.now)]
+                                          {:status :eval-success
+                                           :result res})
+                           ))
                    (juxt console.error
-                         (fn [res] (swap! eval-results assoc :fail res))))]
+                         (fn [res] (swap! eval-results assoc-in [:results (js/performance.now)]
+                                          {:status :eval-fail
+                                           :result res}))))]
     (write-fn (replumb/unwrap-result result))))
 
 (defn eval [user-input]
@@ -31,7 +36,7 @@
                                                   ["/src/cljs" "/src/speech" "/js/compiled/out"]
                                                   fetch-file!)
                                  {:warning-as-error true
-                                  :verbose true})
+                                  :verbose false})
                           (partial handle-result! js/console)
                           user-input))
 

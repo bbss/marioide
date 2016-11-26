@@ -17,7 +17,8 @@
    [devcards-om-next.core :refer-macros [#_defcard-om-next om-next-root]]
    [devtools.core :as devtools]
    [parinfer-cljs.core :refer [indent-mode paren-mode]]
-   [cljs-http.client :as http])
+   [cljs-http.client :as http]
+   [cljsjs.react-motion])
   (:require-macros
    [cljs.core.async.macros :refer [go go-loop]]
    [devcards.core :as dc :refer [defcard defcard-om-next deftest dom-node]])
@@ -127,28 +128,50 @@
   (query [this]
          [{:gist/list (om/get-query Gist)}])
   Object
+  (initLocalState [this]
+                  {"tab-index" 0})
   (render [this]
-          (let [{:keys [gist/list]} (om/props this)]
+          (let [{:keys [gist/list]} (om/props this)
+                actions {:add-file
+                         (fn [id]
+                           (om/transact! this `[(app/add-file {:id ~id}) [:gist/list]]))
+                         :save-gist
+                         (fn [id]
+                           (om/transact! this `[(app/save-gist {:id ~id})]))
+                         :expand-gist
+                         (fn [id]
+                           (om/transact! this `[(app/expand-gist {:id ~id}) [:gist/list]]))}]
             (ui/mui-theme-provider
              {:mui-theme (ui/get-mui-theme)}
-             (ui/card (ui/list nil
-                                (for [gist list]
-                                             (gist-component
-                                              (om/computed gist
-                                                           {:add-file
-                                                            (fn [id]
-                                                              (om/transact! this `[(app/add-file {:id ~id}) [:gist/list]]))
-                                                            :save-gist
-                                                            (fn [id]
-                                                              (om/transact! this `[(app/save-gist {:id ~id})]))
-                                                            :expand-gist
-                                                            (fn [id]
-                                                              (om/transact! this `[(app/expand-gist {:id ~id}) [:gist/list]]))}))))
-                      (ui/card-actions (ui/floating-action-button {:label "Add new Gist"
-                                                                   :mini true
-                                                                   :on-touch-tap #(om/transact! this '[(app/new-gist) [:gist/list]])
-                                                                   }
-                                                                  (ic/content-add))))))))
+             (ui/card
+              (ui/tabs {:on-change (fn [i] (om/set-state! this {"tab-index" i}))
+                        :value (om/get-state this "tab-index")}
+                       (ui/tab {:label "Code"
+                                :value 0})
+                       (ui/tab {:label "Results"
+                                :value 1}))
+              (js/React.createElement
+               js/SwipeableViews
+               #js {"index" (om/get-state this "tab-index")}
+               (ui/card (for [gist list]
+                          (gist-component
+                           (om/computed gist
+                                        actions)))
+                        (ui/card-actions
+                         (ui/floating-action-button
+                          {:label "Add new Gist"
+                           :mini true
+                           :on-touch-tap #(om/transact! this '[(app/new-gist) [:gist/list]])
+                           }
+                          (ic/content-add))))
+               (ui/grid-list {:cols 1}
+                             (for [[_ result] (reverse (sort-by first (:results @eval-results)))]
+                               (ui/grid-tile {:style {:background-color
+                                                      (case (:status result)
+                                                        :eval-fail (ui/color "deepOrange100")
+                                                        :eval-success (ui/color "lightGreen100")
+                                                        "white")}}
+                                             (devcards.util.edn-renderer/html-edn (:result result)))))))))))
 
 (defmulti read om/dispatch)
 
@@ -213,6 +236,7 @@
                                        :file/language "Clojure"
                                        :file/content ";;start coding!"
                                        :file/name "rename-me.clj"}))))))})
+
 (defonce p (om/parser {:read read :mutate mutate}))
 
 (defn grab-and-merge-file [merge-cb state gist-id]
