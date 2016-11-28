@@ -50,7 +50,7 @@
 
 (defn ppr [& args] (cljs.pprint/pprint args))
 
-(def base-url "http://localhost:3000/api/oauth2")
+(def base-url "/api/oauth2")
 
 (defn clojure-replize [cm id content]
   (speech.editor/parinferize! cm id :indent-mode "")
@@ -86,8 +86,11 @@
                            ]
                        (om/set-state! this {:file/editor cm})))
   (render [this]
-          (let [{:keys [:file/content :file/name :file/id]} (om/props this)]
-            (ui/card (ui/subheader name)
+          (let [{:keys [:file/content :file/name :file/id :file/language]} (om/props this)]
+            (ui/card (ui/card-actions (ui/subheader name)
+                                      (when (= language "Clojure")
+                                        (ui/flat-button {:label "eval"
+                                                         :on-touch-tap #(speech.eval/eval (speech.editor/current-selection (om/get-state this :file/editor)))})))
                      (dom/textarea #js {:ref id
                                         :value (str content)})))))
 
@@ -131,19 +134,8 @@
   (initLocalState [this]
                   {"tab-index" 0})
   (render [this]
-          (let [{:keys [gist/list]} (om/props this)
-                actions {:add-file
-                         (fn [id]
-                           (om/transact! this `[(app/add-file {:id ~id}) [:gist/list]]))
-                         :save-gist
-                         (fn [id]
-                           (om/transact! this `[(app/save-gist {:id ~id})]))
-                         :expand-gist
-                         (fn [id]
-                           (om/transact! this `[(app/expand-gist {:id ~id}) [:gist/list]]))}]
-            (ui/mui-theme-provider
-             {:mui-theme (ui/get-mui-theme)}
-             (ui/card
+          (let [{:keys [gist/list]} (om/props this)]
+            (ui/card
               (ui/tabs {:on-change (fn [i] (om/set-state! this {"tab-index" i}))
                         :value (om/get-state this "tab-index")}
                        (ui/tab {:label "Code"
@@ -152,16 +144,17 @@
                                 :value 1}))
               (js/React.createElement
                js/SwipeableViews
-               #js {"index" (om/get-state this "tab-index")}
+               #js {"index" (om/get-state this "tab-index")
+                    "onChangeIndex" #(om/set-state! this {"tab-index" %})}
                (ui/card (for [gist list]
                           (gist-component
                            (om/computed gist
-                                        actions)))
+                                        (om/get-computed this))))
                         (ui/card-actions
                          (ui/floating-action-button
                           {:label "Add new Gist"
                            :mini true
-                           :on-touch-tap #(om/transact! this '[(app/new-gist) [:gist/list]])
+                           :on-touch-tap #((:add-new-gist (om/get-computed this)))
                            }
                           (ic/content-add))))
                (ui/grid-list {:cols 1}
@@ -171,7 +164,36 @@
                                                         :eval-fail (ui/color "deepOrange100")
                                                         :eval-success (ui/color "lightGreen100")
                                                         "white")}}
-                                             (devcards.util.edn-renderer/html-edn (:result result)))))))))))
+                                             (devcards.util.edn-renderer/html-edn (:result result))))))))))
+
+(def gists-component (om/factory Gists {:keyfn (fn [] :gist)}))
+
+(defui App
+  static om/IQuery
+  (query [this]
+         [{:gists (om/get-query Gists)} :authed])
+  Object
+  (render [this]
+          (let [{:keys [gists authed]} (om/props this)]
+            (ui/mui-theme-provider
+             {:mui-theme (ui/get-mui-theme)}
+             (ui/card (ui/toolbar (ui/toolbar-title {:text "Marioide"})
+                                  (when (not authed)
+                                    (ui/toolbar-group
+                                     (ui/toolbar-separator)
+                                     (ui/flat-button {:label "sign-in"
+                                                      :href "api/oauth2/initiate-github"}))))
+                      (gists-component (om/computed gists
+                                                    {:add-file
+                                                     (fn [id]
+                                                       (om/transact! this `[(app/add-file {:id ~id}) [:gists]]))
+                                                     :save-gist
+                                                     (fn [id]
+                                                       (om/transact! this `[(app/save-gist {:id ~id})]))
+                                                     :expand-gist
+                                                     (fn [id]
+                                                       (om/transact! this `[(app/expand-gist {:id ~id}) [:gists]]))
+                                                     :add-new-gist #(om/transact! this '[(app/new-gist) [:gists]])})))))))
 
 (defmulti read om/dispatch)
 
@@ -216,6 +238,11 @@
   {:action (fn []
              (go (take! (http/post (str base-url "/gist/new"))
                         print)))})
+
+(defmethod mutate 'app/authed
+  [{:keys [state]} _ _]
+  {:action (fn [] )})
+
 
 (defmethod mutate 'app/add-file
   [{:keys [state]} _ {:keys [id]}]
@@ -287,11 +314,28 @@
 (defonce r (om/reconciler
             {:state state
              :parser p
-             :remotes [:gist/list]
-             :send (fn [{:keys [:gist/list]} cb]
-                     (go (take! (http/get (str base-url "/gist/list"))
-                                (partial extract-gists
-                                         list state cb))))}))
+             :remotes [:gist/list :authed]
+             :send (fn [{:keys [gist/list authed]} cb]
+                     (when list
+                       (go (take! (http/get (str base-url "/gist/list"))
+                                  (partial extract-gists
+                                           list state cb))))
+                     (when authed
+                       (go (take! (http/get (str base-url "/authed"))
+                                  (fn [res] (cb {:authed (-> res :body :authed)}))))))}))
+
+(defmethod read :gists
+  [{:keys [state parser] :as env} k _]
+  {:value (parser {:state state}
+                  [:gist/list])
+   :gist/list true})
+
+(defmethod read :authed
+  [{:keys [state]} _ _]
+  {:value (if (nil? (:authed @state))
+            :pending
+            (:authed @state))
+   :authed true})
 
 (defmethod read :gist/list
   [{:keys [state] :as env} k _]
@@ -299,19 +343,11 @@
                         (:gist/list @state)
                         @state
                         )
-              [])
-   :gist/list true})
+              [])})
 
 (defmethod read :default
   [{:keys [state] :as env} k _]
   {:value (get @state k)})
-
-(defcard-om-next gists-card
-  Gists
-  r)
-
-(defcard results
-  eval-results)
 
 (defonce root (atom nil))
 
@@ -321,9 +357,13 @@
     (reset! root Gists)
     (.forceUpdate (om/app-root r))))
 
-;;fix parsing of multiple files in gist
+(defn main []
+    ;; conditionally start the app based on whether the #main-app-area
+    ;; node is on the page
+    (if-let [node (.getElementById js/document "main-app-area")]
+      (om/add-root! r App node)))
 
-
+(js/setTimeout #(main) 1000)
 
 
 

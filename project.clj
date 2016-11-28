@@ -47,22 +47,22 @@
   :source-paths ["src"]
 
   :cljsbuild {
-              :builds [{:id "devcards"
-                        :source-paths ["src"]
-                        :figwheel {:on-jsload "speech.core/fig-reload"
-                                   :devcards true}
-                        :compiler { :main       "speech.core"
-                                    :asset-path "js/compiled/devcards_out"
-                                    :output-to  "resources/public/js/compiled/speech_devcards.js"
-                                    :output-dir "resources/public/js/compiled/devcards_out"
-                                    :source-map-timestamp true }}
-                       {:id "dev"
+              :builds [{:id "dev"
                         :source-paths ["src"]
                         :figwheel true
                         :compiler {:main       "speech.core"
                                    :asset-path "js/compiled/out"
                                    :output-to  "resources/public/js/compiled/speech.js"
                                    :output-dir "resources/public/js/compiled/out"
+                                   :source-map-timestamp true }}
+                       {:id "devcards"
+                        :source-paths ["src"]
+                        :figwheel {:on-jsload "speech.core/fig-reload"
+                                   :devcards true}
+                        :compiler { :main      "speech.devcards.core"
+                                   :asset-path "js/compiled/devcards_out"
+                                   :output-to  "resources/public/js/compiled/speech_devcards.js"
+                                   :output-dir "resources/public/js/compiled/devcards_out"
                                    :source-map-timestamp true }}
                        {:id "prod"
                         :source-paths ["src"]

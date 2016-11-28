@@ -40,10 +40,7 @@
      [
       ["" (yada/redirect ::index)]
       ["/" (yada/redirect ::index)]
-      ["/index.html" (-> (yada/resource
-                          {:methods {:get {:response (fn [ctx] "/cards.html")
-                                           :produces {:media-type "text/plain"}}}})
-                         (assoc :id ::index))]
+
       ["/oauth2" (let [github-client-id (env :gh-client-id)
                        github-client-secret (env :gh-client-secret)
                        secret (hash/sha256 "bla")]
@@ -56,13 +53,23 @@
                                             :status 302
                                             :headers {"location" uri})
                                      (println "no uri")))})]
+                    ["/authed" (-> (yada/resource
+                                    {:access-control
+                                     {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
+                                     :methods {:get {:response
+                                                     (fn [ctx]
+                                                       (if-let [user (-> ctx :authentication (get "default"))]
+                                                         {:authed true}
+                                                         {:authed false}))
+                                                     :produces {:media-type produced-types}
+                                                     :consumes {:media-type consumed-types}}}}))]
                     ["/initiate-github" (oauth/oauth2-initiate-resource
                                          {:id ::initiate-github
                                           :type :github
                                           :client-id github-client-id
                                           :redirect-uri ::github-oauth-callback
                                           :secret secret
-                                          :target-uri ::cards
+                                          :target-uri ::index
                                           :authorization-uri "https://github.com/login/oauth/authorize"
                                           :scope (str/join "," ["user:email" "gist"])})]
 
@@ -115,20 +122,20 @@
                                             "unauthed"))
                                         :produces {:media-type produced-types}
                                         :consumes {:media-type consumed-types}}}})
-                           (assoc :id ::index))]
+                           )]
                       ["/new"
                        (yada/resource
-                            {:access-control
-                             {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
-                             :methods {:post {:response (fn [ctx]
-                                                          (if-let [user (-> ctx :authentication (get "default"))]
-                                                            (gists/create-gist {:new-file "(+ 1 1)"}
-                                                                               {:description "new gist"
-                                                                                :public false
-                                                                                :oauth-token (get-token user)})
-                                                            "unauthed"))
-                                              :produces {:media-type produced-types}
-                                              :consumes {:media-type consumed-types}}}})]
+                        {:access-control
+                         {:authentication-schemes [{:scheme :oauth2 :yada.oauth2/secret secret}]}
+                         :methods {:post {:response (fn [ctx]
+                                                      (if-let [user (-> ctx :authentication (get "default"))]
+                                                        (gists/create-gist {:new-file.clj "(+ 1 1)"}
+                                                                           {:description "new gist"
+                                                                            :public false
+                                                                            :oauth-token (get-token user)})
+                                                        "unauthed"))
+                                          :produces {:media-type produced-types}
+                                          :consumes {:media-type consumed-types}}}})]
                       ["/list"
                        (yada/resource
                         {:id ::welcome
@@ -141,13 +148,18 @@
                                 :response (fn [ctx]
                                             (if-let [user (-> ctx :authentication (get "default"))]
                                               (gists/gists {:oauth-token (get-token user)})
-                                              "unauthed"))}}})]]]])]]]
+                                              []))}}})]]]])]]]
     ["/cards.html" (-> (yada (clojure.java.io/file "resources/public/cards.html"))
                        (assoc :id ::cards))]
-    ["/" (yada.resources.file-resource/new-directory-resource
-          (clojure.java.io/file "resources/public") {})]]])
+    ["/build" [["/" (yada/handler (new java.io.File "resources/public/build"))]]]
+    ["/js" [["/" (yada/handler (new java.io.File "resources/public/js"))]]]
+    ["/css" [["/" (yada/handler (new java.io.File "resources/public/css"))]]]
+    ["/" (-> (yada (clojure.java.io/file "resources/public/index.html"))
+                       (assoc :id ::index))]
+    ]])
 
 (declare svr)
+(restart)
 
 (defn restart []
   (when (:close svr) ((:close svr)))
