@@ -159,7 +159,6 @@
     ]])
 
 (declare svr)
-(restart)
 
 (defn restart []
   (when (:close svr) ((:close svr)))
@@ -168,3 +167,4 @@
                     [{:scheme :http :host "localhost:3000"}
                      (build-routes)])
                    {:port 3000})))
+(restart)

@@ -18,11 +18,31 @@
    [devtools.core :as devtools]
    [parinfer-cljs.core :refer [indent-mode paren-mode]]
    [cljs-http.client :as http]
-   [cljsjs.react-motion])
+   [cljsjs.react-motion]
+   [goog.events :refer [listen]]
+   )
   (:require-macros
    [cljs.core.async.macros :refer [go go-loop]]
    [devcards.core :as dc :refer [defcard defcard-om-next deftest dom-node]])
   )
+
+(defn debounce
+  ([c ms] (debounce (chan) c ms false))
+  ([c ms immediate] (debounce (chan) c ms immediate))
+  ([c' c ms immediate]
+   (go
+     (loop [start (js/Date.) timeout nil]
+       (let [loc (<! c)]
+         (when timeout
+           (js/clearTimeout timeout))
+         (let [diff (- (js/Date.) start)
+               delay (if (and immediate
+                              (or (>= diff ms)
+                                  (not timeout)))
+                       0 ms)
+               t (js/setTimeout #(go (>! c' loc)) delay)]
+           (recur (js/Date.) t)))))
+   c'))
 
 (devtools/install! [:formatters :hints :async])
 
@@ -171,10 +191,10 @@
 (defui App
   static om/IQuery
   (query [this]
-         [{:gists (om/get-query Gists)} :authed])
+         [{:gists (om/get-query Gists)} :authed :wide])
   Object
   (render [this]
-          (let [{:keys [gists authed]} (om/props this)]
+          (let [{:keys [gists authed wide]} (om/props this)]
             (ui/mui-theme-provider
              {:mui-theme (ui/get-mui-theme)}
              (ui/card (ui/toolbar (ui/toolbar-title {:text "Marioide"})
@@ -192,7 +212,9 @@
                                                        (om/transact! this `[(app/save-gist {:id ~id})]))
                                                      :expand-gist
                                                      (fn [id]
-                                                       (om/transact! this `[(app/expand-gist {:id ~id}) [:gists]]))
+                                                       (om/transact!
+                                                        this
+                                                        `[(app/expand-gist {:id ~id}) [:gists]]))
                                                      :add-new-gist #(om/transact! this '[(app/new-gist) [:gists]])})))))))
 
 (defmulti read om/dispatch)
@@ -237,12 +259,11 @@
   [{:keys [state]} _ _]
   {:action (fn []
              (go (take! (http/post (str base-url "/gist/new"))
-                        print)))})
+                        #(js/location.reload))))})
 
 (defmethod mutate 'app/authed
   [{:keys [state]} _ _]
   {:action (fn [] )})
-
 
 (defmethod mutate 'app/add-file
   [{:keys [state]} _ {:keys [id]}]
@@ -263,6 +284,14 @@
                                        :file/language "Clojure"
                                        :file/content ";;start coding!"
                                        :file/name "rename-me.clj"}))))))})
+
+(defmethod mutate 'app/resize-inner-width
+  [{:keys [state]} _ {:keys [width]}]
+  {:action #(swap! state assoc :wide (>= width 640))})
+
+(defmethod mutate :default
+  [_ _ _]
+  {:action #(deref state)})
 
 (defonce p (om/parser {:read read :mutate mutate}))
 
@@ -349,13 +378,20 @@
   [{:keys [state] :as env} k _]
   {:value (get @state k)})
 
-(defonce root (atom nil))
+(def resizes (chan))
 
-(defn init []
-  #_(swap! state assoc :ui/react-key @refresh-key)
-  #_(if (nil? @root)
-    (reset! root Gists)
-    (.forceUpdate (om/app-root r))))
+(def debounced-resizes (debounce resizes 500 true))
+
+(defonce _
+  (listen js/window "resize" #(put! resizes %)))
+
+
+(go-loop [event (<! debounced-resizes)]
+  (om/transact! r `[(app/resize-inner-width {:width ~(-> event
+                                                         (gobj/get "target")
+                                                         (gobj/get "innerWidth"))})
+                    [[:wide]]])
+  (recur (<! debounced-resizes)))
 
 (defn main []
     ;; conditionally start the app based on whether the #main-app-area
