@@ -155,37 +155,60 @@
   (initLocalState [this]
                   {"tab-index" 0})
   (render [this]
-          (let [{:keys [gist/list]} (om/props this)]
-            (ui/card
-              (ui/tabs {:on-change (fn [i] (om/set-state! this {"tab-index" i}))
-                        :value (om/get-state this "tab-index")}
-                       (ui/tab {:label "Code"
-                                :value 0})
-                       (ui/tab {:label "Results"
-                                :value 1}))
-              (js/React.createElement
-               js/SwipeableViews
-               #js {"index" (om/get-state this "tab-index")
-                    "onChangeIndex" #(om/set-state! this {"tab-index" %})}
-               (ui/card (for [gist list]
-                          (gist-component
-                           (om/computed gist
-                                        (om/get-computed this))))
-                        (ui/card-actions
-                         (ui/floating-action-button
-                          {:label "Add new Gist"
-                           :mini true
-                           :on-touch-tap #((:add-new-gist (om/get-computed this)))
-                           }
-                          (ic/content-add))))
-               (ui/grid-list {:cols 1}
-                             (for [[_ result] (reverse (sort-by first (:results @eval-results)))]
-                               (ui/grid-tile {:style {:background-color
-                                                      (case (:status result)
-                                                        :eval-fail (ui/color "deepOrange100")
-                                                        :eval-success (ui/color "lightGreen100")
-                                                        "white")}}
-                                             (devcards.util.edn-renderer/html-edn (:result result))))))))))
+          (let [{:keys [gist/list]} (om/props this)
+                {:keys [add-new-gist wide]} (om/get-computed this)]
+            (if wide
+              (ui/grid-list
+                       (ui/card {:style {}}
+                                (for [gist list]
+                                  (gist-component
+                                   (om/computed gist
+                                                (om/get-computed this))))
+                                (ui/card-actions
+                                 (ui/floating-action-button
+                                  {:label "Add new Gist"
+                                   :mini true
+                                   :on-touch-tap #(add-new-gist)
+                                   }
+                                  (ic/content-add))))
+                       (ui/grid-list {:cols 1}
+                                               (for [[_ result] (reverse (sort-by first (:results @eval-results)))]
+                                                 (ui/grid-tile {:style {:background-color
+                                                                        (case (:status result)
+                                                                          :eval-fail (ui/color "deepOrange100")
+                                                                          :eval-success (ui/color "lightGreen100")
+                                                                          "white")}}
+                                                               (devcards.util.edn-renderer/html-edn (:result result))))))
+              (ui/card
+               (ui/tabs {:on-change (fn [i] (om/set-state! this {"tab-index" i}))
+                         :value (om/get-state this "tab-index")}
+                        (ui/tab {:label "Code"
+                                 :value 0})
+                        (ui/tab {:label "Results"
+                                 :value 1}))
+               (js/React.createElement
+                js/SwipeableViews
+                #js {"index" (om/get-state this "tab-index")
+                     "onChangeIndex" #(om/set-state! this {"tab-index" %})}
+                (ui/card (for [gist list]
+                           (gist-component
+                            (om/computed gist
+                                         (om/get-computed this))))
+                         (ui/card-actions
+                          (ui/floating-action-button
+                           {:label "Add new Gist"
+                            :mini true
+                            :on-touch-tap #(add-new-gist)
+                            }
+                           (ic/content-add))))
+                (ui/grid-list {:cols 1}
+                              (for [[_ result] (reverse (sort-by first (:results @eval-results)))]
+                                (ui/grid-tile {:style {:background-color
+                                                       (case (:status result)
+                                                         :eval-fail (ui/color "deepOrange100")
+                                                         :eval-success (ui/color "lightGreen100")
+                                                         "white")}}
+                                              (devcards.util.edn-renderer/html-edn (:result result)))))))))))
 
 (def gists-component (om/factory Gists {:keyfn (fn [] :gist)}))
 
@@ -216,7 +239,8 @@
                                                        (om/transact!
                                                         this
                                                         `[(app/expand-gist {:id ~id}) [:gists]]))
-                                                     :add-new-gist #(om/transact! this '[(app/new-gist) [:gists]])})))))))
+                                                     :add-new-gist #(om/transact! this '[(app/new-gist) [:gists]])
+                                                     :wide wide})))))))
 
 (defmulti read om/dispatch)
 
