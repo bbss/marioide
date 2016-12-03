@@ -426,7 +426,9 @@
 (defn main []
     ;; conditionally start the app based on whether the #main-app-area
     ;; node is on the page
-    (if-let [node (.getElementById js/document "main-app-area")]
+  (om/transact! r `[(app/resize-inner-width {:width ~(gobj/get js/window "innerWidth")})
+                    [[:wide]]])
+  (if-let [node (.getElementById js/document "main-app-area")]
       (om/add-root! r App node)))
 
 (js/setTimeout #(main) 1000)
