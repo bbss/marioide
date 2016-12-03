@@ -222,7 +222,11 @@
             (ui/mui-theme-provider
              {:mui-theme (ui/get-mui-theme)}
              (ui/card (ui/toolbar (ui/toolbar-title {:text "Marioide"})
-                                  (when (not authed)
+                                  (if authed
+                                    (ui/icon-button {:on-touch-tap #(if (.-webkitRequestFullscreen js/document.documentElement)
+                                                                      (.webkitRequestFullscreen js/document.documentElement)
+                                                                      (.requestFullscreen js/document.documentElement))}
+                                                    (ic/navigation-fullscreen))
                                     (ui/toolbar-group
                                      (ui/toolbar-separator)
                                      (ui/flat-button {:label "sign-in"
