@@ -51,6 +51,7 @@
 (enable-console-print!)
 
 (declare init)
+
 (defonce refresh-key (atom 0))
 
 (defn fig-reload []
@@ -358,6 +359,7 @@
   {:value (parser {:state state}
                   [:gist/list])
    :gist/list true})
+
 
 (defmethod read :authed
   [{:keys [state]} _ _]

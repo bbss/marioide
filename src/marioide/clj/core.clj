@@ -22,7 +22,6 @@
     "application/edn"
     "text/html"})
 
-
 (def consumed-types
   #{"application/transit+json"
                                         ;"application/transit+msgpack"
@@ -164,7 +163,6 @@
   (when (:close svr) ((:close svr)))
   (def svr
     (yada/listener (vhosts-model
-                    [{:scheme :http :host "localhost:3000"}
+                    [{:scheme :http :host "192.168.2.46:3000"}
                      (build-routes)])
-                   {:port 3000})))
-(restart)
+                            {:port 3000})))

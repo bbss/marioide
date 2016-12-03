@@ -49,7 +49,7 @@
   :cljsbuild {
               :builds [{:id "dev"
                         :source-paths ["src"]
-                        :figwheel true
+                        :figwheel {:websocket-url "ws://192.168.2.46:3449/figwheel-ws"}
                         :compiler {:main       "speech.core"
                                    :asset-path "js/compiled/out"
                                    :output-to  "resources/public/js/compiled/speech.js"
@@ -71,7 +71,9 @@
                                    :output-to  "resources/public/js/compiled/speech.js"
                                    :optimizations :advanced}}]}
 
-  :figwheel { :css-dirs ["resources/public/css"] }
+  :figwheel {:css-dirs ["resources/public/css"]
+             :server-ip "0.0.0.0"
+             }
 
   :profiles {:dev {:dependencies [[binaryage/devtools "0.8.2"]
                                   [figwheel-sidecar "0.5.8"]
