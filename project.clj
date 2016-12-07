@@ -7,7 +7,7 @@
   :min-lein-version "2.7.1"
 
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.229"]
+                 [org.clojure/clojurescript "1.9.293"]
                  [devcards "0.2.2"]
                  [sablono "0.7.4"]
                  [org.omcljs/om "1.0.0-alpha47"]
@@ -44,11 +44,11 @@
   :clean-targets ^{:protect false} ["resources/public/js/compiled"
                                     "target"]
 
-  :source-paths ["src"]
+  :source-paths ["src" "src/speech"]
 
   :cljsbuild {
               :builds [{:id "dev"
-                        :source-paths ["src"]
+                        :source-paths ["src/speech"]
                         :figwheel {:websocket-url "ws://192.168.2.46:3449/figwheel-ws"}
                         :compiler {:main       "speech.core"
                                    :asset-path "js/compiled/out"
@@ -56,7 +56,7 @@
                                    :output-dir "resources/public/js/compiled/out"
                                    :source-map-timestamp true }}
                        {:id "devcards"
-                        :source-paths ["src"]
+                        :source-paths ["src/speech"]
                         :figwheel {:on-jsload "speech.core/fig-reload"
                                    :devcards true}
                         :compiler { :main      "speech.devcards.core"
@@ -65,11 +65,11 @@
                                    :output-dir "resources/public/js/compiled/devcards_out"
                                    :source-map-timestamp true }}
                        {:id "prod"
-                        :source-paths ["src"]
+                        :source-paths ["src/speech"]
                         :compiler {:main       "speech.core"
                                    :asset-path "js/compiled/out"
                                    :output-to  "resources/public/js/compiled/speech.js"
-                                   :optimizations :advanced}}]}
+                                   }}]}
 
   :figwheel {:css-dirs ["resources/public/css"]
              :server-ip "0.0.0.0"

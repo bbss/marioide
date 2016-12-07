@@ -3,7 +3,7 @@
    [cljsjs.material-ui]
    [cljs-react-material-ui.core :as ui]
    [cljs-react-material-ui.icons :as ic]
-   [speech.fixtures.definition :refer [def-recognizer]]
+   #_[speech.fixtures.definition :refer [def-recognizer]]
    [speech.editor :refer [e-state create-editor-el! start-editor-sync!]]
    [speech.eval :refer [ConsoleElement console-element eval-results]]
    [sablono.core :as sab :include-macros true]
@@ -14,16 +14,16 @@
    [cljs.core.async :refer [chan put! timeout take! <! >!]]
    [clojure.string :refer [includes? replace-first]]
    [dirac.runtime]
-   [devcards-om-next.core :refer-macros [#_defcard-om-next om-next-root]]
    [devtools.core :as devtools]
    [parinfer-cljs.core :refer [indent-mode paren-mode]]
    [cljs-http.client :as http]
    [cljsjs.react-motion]
    [goog.events :refer [listen]]
+
    )
   (:require-macros
    [cljs.core.async.macros :refer [go go-loop]]
-   [devcards.core :as dc :refer [defcard defcard-om-next deftest dom-node]])
+   )
   )
 
 (defn debounce
@@ -178,7 +178,7 @@
                                                                           :eval-fail (ui/color "deepOrange100")
                                                                           :eval-success (ui/color "lightGreen100")
                                                                           "white")}}
-                                                               (devcards.util.edn-renderer/html-edn (:result result))))))
+                                                               (:result result)))))
               (ui/card
                (ui/tabs {:on-change (fn [i] (om/set-state! this {"tab-index" i}))
                          :value (om/get-state this "tab-index")}
@@ -208,7 +208,7 @@
                                                          :eval-fail (ui/color "deepOrange100")
                                                          :eval-success (ui/color "lightGreen100")
                                                          "white")}}
-                                              (devcards.util.edn-renderer/html-edn (:result result)))))))))))
+                                              (:result result))))))))))
 
 (def gists-component (om/factory Gists {:keyfn (fn [] :gist)}))
 
