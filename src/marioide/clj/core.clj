@@ -163,6 +163,19 @@
   (when (:close svr) ((:close svr)))
   (def svr
     (yada/listener (vhosts-model
-                    [{:scheme :http :host "192.168.2.46:3000"}
+                    [{:scheme (env :server-config-scheme)
+                      :host (env :server-config-host)}
                      (build-routes)])
                             {:port 3000})))
+
+
+(defn -main []
+  (println "starting server")
+  (yada/listener (vhosts-model
+                  [{:scheme (keyword (env :server-config-scheme))
+                    :host (env :server-config-host)}
+                   (build-routes)])
+                 {:port 3000})
+  @(promise))
+
+(-main)
