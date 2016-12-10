@@ -107,13 +107,40 @@
                            ]
                        (om/set-state! this {:file/editor cm})))
   (render [this]
-          (let [{:keys [:file/content :file/name :file/id :file/language]} (om/props this)]
-            (ui/card (ui/card-actions (ui/subheader name)
-                                      (when (= language "Clojure")
-                                        (ui/flat-button {:label "eval"
-                                                         :on-touch-tap #(speech.eval/eval (speech.editor/current-selection (om/get-state this :file/editor)))})))
+          (let [{:keys [:file/content :file/name :file/id :file/language]} (om/props this)
+                selected (om/get-state this "selected")]
+            (ui/card {:style {"width" (if (not selected)
+                                        "50%"
+                                        "100%")
+                              "padding-bottom" (if (not selected)
+                                                 "50%"
+                                                 "100%")
+                              "position" "relative"
+                              "height" 0
+                              "overflow" "hidden"
+                              "background" (when (not selected)
+                                             "linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 25%)")
+                              }
+                      :on-touch-tap #(om/update-state! this assoc "selected" true)}
+                     (dom/span (ui/props-kebab->camel->js {:style {:display "flex"
+                                                                   :justify-content "space-between"}})
+                               (dom/span
+                                (ui/props-kebab->camel->js {:style {:color "#24b47e"
+                                                                    :padding-left "5px"
+                                                                    :padding-top "5px"
+                                                                    :font-size "15px"}})
+                                name)
+                               (when selected (ui/flat-button
+                                               {:style {:align-self "flex-end"}
+                                                :on-touch-tap (fn [e]
+                                                                (.stopPropagation e)
+                                                                (om/update-state! this assoc "selected" false))
+                                                :icon (ic/hardware-keyboard-arrow-left)})))
                      (dom/textarea #js {:ref id
-                                        :value (str content)})))))
+                                        :value (str content)})
+                     (ui/card-actions (when (and (= language "Clojure") selected)
+                                        (ui/flat-button {:label "eval"
+                                                         :on-touch-tap #(speech.eval/eval (speech.editor/current-selection (om/get-state this :file/editor)))})))))))
 
 (def file-component (om/factory File {:keyfn :file/id}))
 
@@ -134,8 +161,12 @@
                                            id)
                            :on-nested-list-toggle #(expand-gist id)
                            :primary-toggles-nested-list true
-                           :nested-items [(for [file list]
-                                            (file-component file))
+                           :nested-items [(dom/div #js {:style #js {"display" "flex"
+                                                                    "flexWrap" "wrap"
+                                                                    "padding" 0
+                                                                    "margin" 0
+                                                                    }}
+                                                   (map #(file-component %) list))
                                           (ui/flat-button {:label "Save gist to Github"
                                                            :key "button"
                                                            :on-touch-tap #(save-gist id)})
@@ -159,26 +190,26 @@
                 {:keys [add-new-gist wide]} (om/get-computed this)]
             (if wide
               (ui/grid-list
-                       (ui/card {:style {}}
-                                (for [gist list]
-                                  (gist-component
-                                   (om/computed gist
-                                                (om/get-computed this))))
-                                (ui/card-actions
-                                 (ui/floating-action-button
-                                  {:label "Add new Gist"
-                                   :mini true
-                                   :on-touch-tap #(add-new-gist)
-                                   }
-                                  (ic/content-add))))
-                       (ui/grid-list {:cols 1}
-                                               (for [[_ result] (reverse (sort-by first (:results @eval-results)))]
-                                                 (ui/grid-tile {:style {:background-color
-                                                                        (case (:status result)
-                                                                          :eval-fail (ui/color "deepOrange100")
-                                                                          :eval-success (ui/color "lightGreen100")
-                                                                          "white")}}
-                                                               (:result result)))))
+               (ui/card
+                        (interleave (repeat (ui/divider))
+                                    (map #(gist-component
+                                           (om/computed % (om/get-computed this)))
+                                         list))
+                        (ui/card-actions
+                         (ui/floating-action-button
+                          {:label "Add new Gist"
+                           :mini true
+                           :on-touch-tap #(add-new-gist)
+                           }
+                          (ic/content-add))))
+               (ui/grid-list {:cols 1}
+                             (for [[_ result] (reverse (sort-by first (:results @eval-results)))]
+                               (ui/grid-tile {:style {:background-color
+                                                      (case (:status result)
+                                                        :eval-fail (ui/color "deepOrange100")
+                                                        :eval-success (ui/color "lightGreen100")
+                                                        "white")}}
+                                             (:result result)))))
               (ui/card
                (ui/tabs {:on-change (fn [i] (om/set-state! this {"tab-index" i}))
                          :value (om/get-state this "tab-index")}
@@ -221,7 +252,8 @@
           (let [{:keys [gists authed wide]} (om/props this)]
             (ui/mui-theme-provider
              {:mui-theme (ui/get-mui-theme)}
-             (ui/card (ui/toolbar (ui/toolbar-title {:text "Marioide"})
+             (ui/card (ui/toolbar (ui/toolbar-title {:text "marioide"
+                                                     :style {:color "#24b47e"}})
                                   (if authed
                                     (ui/icon-button {:on-touch-tap #(if (.-webkitRequestFullscreen js/document.documentElement)
                                                                       (.webkitRequestFullscreen js/document.documentElement)
@@ -414,7 +446,6 @@
 
 (defonce _
   (listen js/window "resize" #(put! resizes %)))
-
 
 (go-loop [event (<! debounced-resizes)]
   (om/transact! r `[(app/resize-inner-width {:width ~(-> event
