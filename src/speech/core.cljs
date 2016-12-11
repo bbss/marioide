@@ -150,10 +150,10 @@
          [:gist/id id])
   static om/IQuery
   (query [this]
-         [:gist/id {:file/list (om/get-query File)} :gist/description :gist/expanded])
+         [:gist/id {:file/list (om/get-query File)} :gist/description :gist/expanded :gist/fetching])
   Object
   (render [this]
-          (let [{:keys [gist/id file/list gist/description gist/expanded]} (om/props this)
+          (let [{:keys [gist/id file/list gist/description gist/expanded gist/fetching]} (om/props this)
                 {:keys [save-gist expand-gist add-file]} (om/get-computed this)]
             (ui/list-item {:open expanded
                            :primary-text (if (not (empty? description))
@@ -161,20 +161,26 @@
                                            id)
                            :on-nested-list-toggle #(expand-gist id)
                            :primary-toggles-nested-list true
-                           :nested-items [(dom/div #js {:style #js {"display" "flex"
-                                                                    "flexWrap" "wrap"
-                                                                    "padding" 0
-                                                                    "margin" 0
-                                                                    }}
-                                                   (map #(file-component %) list))
-                                          (ui/flat-button {:label "Save gist to Github"
-                                                           :key "button"
-                                                           :on-touch-tap #(save-gist id)})
-                                          (ui/flat-button {:label "Add new file"
-                                                           :key "add file"
-                                                           :style {:float "right"}
-                                                           :icon (ic/content-add-circle)
-                                                           :on-touch-tap #(add-file id)})]}))))
+                           :nested-items (if (or (false? fetching) (not (every? nil? (map :file/content list))))
+                                           [(dom/div (ui/props-kebab->camel->js {:style {"display" "flex"
+                                                                                          "flexWrap" "wrap"
+                                                                                          "padding" 0
+                                                                                          "margin" 0
+                                                                                          }})
+                                                      (map #(file-component %) list))
+                                             (ui/flat-button {:label "Save gist to Github"
+                                                              :key "button"
+                                                              :on-touch-tap #(save-gist id)})
+                                             (ui/flat-button {:label "Add new file"
+                                                              :key "add file"
+                                                              :style {:float "right"}
+                                                              :icon (ic/content-add-circle)
+                                                              :on-touch-tap #(add-file id)})]
+                                           [(ui/linear-progress
+                                             {:mode "indeterminate"
+                                              :style {:padding ""
+                                                      :padding-left "3px"
+                                                      :padding-right "3px"}})])}))))
 
 (def gist-component (om/factory Gist {:keyfn :gist/id}))
 
@@ -302,6 +308,7 @@
                       )
            :filename (:file/name file)
            :language (:file/language file)})}]))))
+;;refactor this function
 
 (defmethod mutate 'app/save-gist
   [_ _ {:keys [id]}]
@@ -371,6 +378,9 @@
                                                              :file/name filename}}}))
                                {}
                                (:files body))]
+                   (merge-cb (deep-merge
+                              {:gist/id (:gist/id @state)}
+                              {:gist/fetching false}))
                    (merge-cb (deep-merge
                               {:file/id (:file/id @state)}
                               merged))))))))
