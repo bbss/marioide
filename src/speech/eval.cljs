@@ -31,7 +31,7 @@
                                            :result res}))))]
     (write-fn (replumb/unwrap-result result))))
 
-(defn eval [user-input]
+(defn eval [user-input ]
   (replumb/read-eval-call (merge (replumb/options :browser
                                                   ["/src/cljs" "/src/speech" "/js/compiled/out"]
                                                   fetch-file!)

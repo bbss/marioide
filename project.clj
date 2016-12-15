@@ -8,9 +8,12 @@
 
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.293"]
-                 [devcards "0.2.2"]
-                 [sablono "0.7.4"]
-                 [org.omcljs/om "1.0.0-alpha47"]
+                 [devcards "0.2.2" :exclusions [cljsjs/react cljsjs/react-dom]]
+                 [sablono "0.7.4" :exclusions [cljsjs/react cljsjs/react-dom]]
+                 [org.omcljs/om "1.0.0-alpha47" :exclusions [cljsjs/react cljsjs/react-dom]]
+
+                 [cljsjs/react "15.4.0-0"]
+                 [cljsjs/react-dom "15.4.0-0"]
                  [org.clojure/core.async "0.2.395"]
                  [binaryage/dirac "0.7.2"]
                  [binaryage/devtools "0.8.2"]
@@ -20,11 +23,8 @@
                  [cljsjs/codemirror "5.19.0-0"]
                  [replumb "0.2.4"]
                  [parinfer-cljs "1.5.1-0"]
-                 [cljs-react-material-ui "0.2.30"]
-                 [cljsjs/react-motion "0.4.5-0"]
-
-                 [cljsjs/react "15.3.1-0"]
-                 [cljsjs/react-dom "15.3.1-0"]
+                 [cljs-react-material-ui "0.2.33"]
+                 [cljsjs/react-motion "0.4.5-0" :exclusions [cljsjs/react cljsjs/react-dom]]
                  [devcards-om-next "0.3.0"]
 
                  [yada "1.1.35"]

@@ -1,5 +1,6 @@
 (ns speech.core
   (:require
+   [cljsjs.react.dom]
    [cljsjs.material-ui]
    [cljs-react-material-ui.core :as ui]
    [cljs-react-material-ui.icons :as ic]
@@ -155,7 +156,8 @@
   (render [this]
           (let [{:keys [gist/id file/list gist/description gist/expanded gist/fetching]} (om/props this)
                 {:keys [save-gist expand-gist add-file]} (om/get-computed this)]
-            (ui/list-item {:open expanded
+            (ui/list-item {:key id
+                           :open expanded
                            :primary-text (if (not (empty? description))
                                            description
                                            id)
@@ -166,7 +168,8 @@
                                                                                           "flexWrap" "wrap"
                                                                                           "padding" 0
                                                                                           "margin" 0
-                                                                                          }})
+                                                                                         }
+                                                                                 :key "files"})
                                                       (map #(file-component %) list))
                                              (ui/flat-button {:label "Save gist to Github"
                                                               :key "button"
@@ -178,9 +181,7 @@
                                                               :on-touch-tap #(add-file id)})]
                                            [(ui/linear-progress
                                              {:mode "indeterminate"
-                                              :style {:padding ""
-                                                      :padding-left "3px"
-                                                      :padding-right "3px"}})])}))))
+                                              :key "lp"})])}))))
 
 (def gist-component (om/factory Gist {:keyfn :gist/id}))
 
@@ -197,17 +198,18 @@
             (if wide
               (ui/grid-list
                (ui/card
-                        (interleave (repeat (ui/divider))
-                                    (map #(gist-component
-                                           (om/computed % (om/get-computed this)))
-                                         list))
-                        (ui/card-actions
-                         (ui/floating-action-button
-                          {:label "Add new Gist"
-                           :mini true
-                           :on-touch-tap #(add-new-gist)
-                           }
-                          (ic/content-add))))
+                (map-indexed (fn [i gist] [(ui/divider {:key i})
+                                           (gist-component
+                                            (om/computed gist
+                                                         (om/get-computed this)))])
+                             list)
+                (ui/card-actions
+                 (ui/floating-action-button
+                  {:label "Add new Gist"
+                   :mini true
+                   :on-touch-tap #(add-new-gist)
+                   }
+                  (ic/content-add))))
                (ui/grid-list {:cols 1}
                              (for [[_ result] (reverse (sort-by first (:results @eval-results)))]
                                (ui/grid-tile {:style {:background-color
@@ -247,7 +249,11 @@
                                                          "white")}}
                                               (:result result))))))))))
 
-(def gists-component (om/factory Gists {:keyfn (fn [] :gist)}))
+(def gists-component (om/factory Gists {:key :gists}))
+
+;;evaluations updaten niet, komt doordat niet in state atom ge-update wordt
+;;er is een apart atom die de cms registreert, nu in local state
+;;evals gaan naar die atoms
 
 (defui App
   static om/IQuery
